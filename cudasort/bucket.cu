@@ -1,5 +1,6 @@
+char *title = "bucket sort";
+char *description = "Блочная сортировка (bucket sort)";
 /*
-Блочная сортировка (bucket sort)
 В блочной карманной или корзинной сортировке(Bucket sort) сортируемые элементы распределены
 между конечным числом отдельных блоков(карманов, корзин) так, чтобы все элементы в каждом следующем
 блоке были всегда больше(или меньше), чем в предыдущем.Каждый блок затем сортируется отдельно либо
@@ -24,76 +25,85 @@
 #include <cuda.h>
 #include <cuda_runtime.h>
 
-typedef byte char;
-typedef size_t int;
-typedef __device__ int(*comparer)(byte *x, byte *y, size_t size);
-typedef __device__ int(*indexator)(byte *x, int index, int len, size_t size);
-typedef __device__ void(*non_parallel_sort)(byte *arr, int index, int len, int n, size_t size, int direction);
-typedef __host__ void(*parallel_sort)(byte *data, int n, size_t size, int direction);
+#define assert( bool ) 
+
+template<class T> __device__ void device_exchange(T *x, T *y, int count);
+template<class T>__device__ void device_copy(T *x, T *y, int count);
+template<class T> __device__ int device_comparer(T *x, T *y);
+template<class T> __device__ int device_indexator(T *x, int index, int len);
+template<class T> __device__ void device_bubble_sort(T *data, int index, int len, int n, int direction);
+template<class T> __global__ void global_bucket_worker_collect(T * data, T * bucket, int * sizes, int n, int index,	int len, int direction);
+template<class T> __global__ void global_bucket_worker_sort(T * data, T * bucket, int * sizes, int n, int index,	int len, int direction);
+template<class T> __global__ void global_bucket_worker_merge(T * data, T * bucket, int * sizes, int n, int index,	int len, int direction);
+template<class T> __host__ void host_bucket_sort(T *data, int n, int direction);
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 // Настроечные аттрибуты
 // _comparer - функция сравнения двух элементов массива
 // _indexator - функция определения номера корзины для элемента массива
-// _non_parallel_sort - фунция сортировки без использования паралельных вычислений.
+// _non_parallel_sort - фунция сортировки без использования паралельных вычислений
 // _parallel_sort - фунция сортировки с использованием паралельных вычислений
 
-comparer _comparer;
-indexator _indexator;
-non_parallel_sort _non_parallel_sort;
-parallel_sort _parallel_sort;
+#define fn_comparer  device_comparer<long>
+#define fn_indexator device_indexator<long>
+#define fn_non_parallel_sort device_bubble_sort<long>
+#define fn_parallel_sort host_bucket_sort<long>
 
-__host__ void host_bucket_sort(byte *data, int n, size_t size, int direction)
+template<class T>
+__host__ void host_bucket_sort(T *data, int n, int direction)
 {
 // data - массив данных
 // n - количество элементов в исходном массиве для сортировки
-// size - размер одного элемента массива в байтах
 // direction - способ сортировки 
 // -1 означает сортировку по убыванию, 
 //  1 означает сортировку по возрастанию
 	
 	cudaError_t err;
-	byte *device_data;
-	byte *device_bucket;
-	int *device_sizes;
+	T *device_data;
+	T *device_bucket;
+	int *device_size;
+
+	// Шаг первый - копируем исходный массив в память GPU 
+
+	err = cudaMalloc((void**)&device_data, n*sizeof(T));
+	cudaMemcpy(device_data, data, n*sizeof(T), cudaMemcpyHostToDevice);
 
 	// Определим оптимальноe количество корзин и парамерты индексатора
 
-	int len = min(max(1,(int)log(log((double)n))),5);
-	int index = 8*size-len;
+	int number = 2; while (number<n && number<5) number++;
+	
+	int len = 1 ; while ((1<<len)<number) len++;
+	int index = 8*sizeof(T)-len;
+
+	// Шаг второй - выделяем память под корзины 
+	
+	err = cudaMalloc((void**)&device_bucket, (n<<len)*sizeof(T));
+	err = cudaMalloc((void**)&device_size, (1<<len)*sizeof(int));
 
 	// Определим оптимальное разбиения на процессы, нити
 
 	int blocks = 1 << (len>>1);
 	int threads = 1 << (len-(len>>1));
 
-	assert((1<<len) == blocks*threads);
-
-	// Шаг первый - копируем исходный массив в память GPU 
-
-	error = cudaMalloc((void**)&device_data, n*size);
-	cudaMemcpy(device_data, data, n*size, cudaMemcpyHostToDevice);
-
-	// Шаг второй - выделяем память под корзины 
-
-	error = cudaMalloc((void**)&device_bucket, (n<<len)*size);
-	error = cudaMalloc((void**)&device_sizes, (1<<len)*sizeof(int));
-
 	// Шаг трeтий - применяем алгоритм
 
-	global_bucket_worker_collect <<< blocks, threads >>>(device_data, device_bucket, device_sizes, n, index, len, size, direction);
-	global_bucket_worker_sort <<< blocks, threads >>>(device_data, device_bucket, device_sizes, n, index, len, size, direction);
-	global_bucket_worker_merge <<< 1, 1 >>>(device_data, device_bucket, device_sizes, n, index, len, size, direction);
+	assert((1<<len) == blocks*threads);
+
+	global_bucket_worker_collect <<< blocks, threads >>>(device_data, device_bucket, device_size, n, index, len, direction);
+	global_bucket_worker_sort <<< blocks, threads >>>(device_data, device_bucket, device_size, n, index, len, direction);
+	global_bucket_worker_merge <<< 1, 1 >>>(device_data, device_bucket, device_size, n, index, len, direction);
 
 	// Возвращаем результаты в исходный массив
 
-	cudaMemcpy(data, device_data, n*size, cudaMemcpyDeviceToHost);
+	cudaMemcpy(data, device_data, n*sizeof(T), cudaMemcpyDeviceToHost);
 
 	// Освобождаем память на устройстве
 
 	cudaFree(device_data);
 	cudaFree(device_bucket);
-	cudaFree(device_sizes);
+	cudaFree(device_size);
+
+	err = err;
 }
 
 // Функция процесса
@@ -105,128 +115,133 @@ __host__ void host_bucket_sort(byte *data, int n, size_t size, int direction)
 //  Параметры индексатора
 //  Размер одного элемента
 //	Направление сортировки
+template<class T>
 __global__ void global_bucket_worker_collect(
-	bype * data, 
-	byte * bucket,
+	T * data, 
+	T * bucket,
 	int * sizes,
 	int n,
 	int index,
 	int len,
-	size_t size,
 	int direction)
 {
 	// Получаем идентификатор нити
 	int id = blockDim.x*blockIdx.x + threadIdx.x;
 
 	if (id < (1<<len)) {
+		sizes[id] = 0;
 		// Набираем товары в корзину
 		for(int i = 0; i < n; i++) {
-			if (id==(*_indexator)(&data[i*size],index,len,size)) {
-				device_copy(&data[i*size],&bucket[id*n+sizes[id]++)*size],size)
+			if (id==fn_indexator(&data[i],index,len)) {
+				device_copy(&bucket[id*n+sizes[id]++],&data[i],1);
 			}
 		}
 	}
 }
+template<class T>
 __global__ void global_bucket_worker_sort(
-	bype * data, 
-	byte * bucket,
+	T * data, 
+	T * bucket,
 	int * sizes,
 	int n,
 	int index,
 	int len,
-	size_t size,
 	int direction)
 {
 	// Получаем идентификатор нити
 	int id = blockDim.x*blockIdx.x + threadIdx.x;
 
 	if (id < (1<<len)) {
-		(*_non_parallel_sort)(bucket, id*n, sizes[id], n, size, direction);
+		fn_non_parallel_sort(bucket, id*n, sizes[id], n, direction);
 	}
 }
+template<class T>
 __global__ void global_bucket_worker_merge(
-	bype * data, 
-	byte * bucket,
+	T * data, 
+	T * bucket,
 	int * sizes,
 	int n,
 	int index,
 	int len,
-	size_t size,
 	int direction)
 {
 	// Получаем идентификатор нити
 	int id = blockDim.x*blockIdx.x + threadIdx.x;
+
 	assert(id == 0);
-	
-	byte * next = data;
+	id = id;
+
+	T * next = data;
 	for(int i=0; i < (1 << len) ; i++ ) {
-		device_copy(next,&bucket[i*n],sizes[i]*size);
-		next = &next[sizes[i]*size];
+		device_copy(next,&bucket[i*n],sizes[i]);
+		next = &next[sizes[i]];
 	}
 }
 
 // Перестановка двух блоков в памяти устройства
-__device__ void device_exchange(byte *x, byte *y, int count)
+template<class T>
+__device__ void device_exchange(T *x, T *y, int count)
 {
-	for (int i = 0; i < count; i++) {
-		byte ch = x[i]; x[i] = y[i]; y[i] = ch;
+	for(int i = 0; i < count ; i++ ) {
+		T ch = x[i] ; x[i] = y[i] ; y[i] = ch;
 	}
 }
 
 // Копирование одного участка памяти в другой
-__device__ void device_copy(byte *x, byte *y, int count)
+template<class T>
+__device__ void device_copy(T *x, T *y, int count)
 {
-	for (int i = 0; i < count; i++) {
-		x[i] = y[i];
+	for(int i = 0; i < count ; i++ ) {
+		x[i] = y[i] ;
 	}
 }
 
 // Функция сравнения данных xранимых в памяти как целых чисел типа long
-__device__ int device_integer_comparer(byte *x, byte *y, size_t size)
+template<class T>
+__device__ int device_comparer(T *x, T *y)
 {
-	assert(size == sizeof(long));
-	if ((*(long*)x)<(*(long*)y)) return 1;
-	else if ((*(long*)x)>(*(long*)y)) return -1;
+	if ((*x)<(*y)) return 1;
+	else if ((*x)>(*y)) return -1;
 	else return 0;
 }
 
 // Определение номера карзины 
-__device__ int device_integer_indexator(byte *x, int index, int len,  size_t size)
+// Формируется положмтельное число из len бит с позиции index
+template<class T>
+__device__ int device_indexator(T *x, int index, int len)
 {
-	// Формируется положмтельное число из len бит с позиции index
-	assert(size == sizeof(long))
-	return min(m,(((*(long*)x)>>index)+(1<<(8*sizeof(long)-index)))^((1<<len)-1);
+	assert(index+len <= sizeof(T));
+	return (int)((((*x) >> index) + (1 << (8 * sizeof(T)-index))) & ((1 << len) - 1));
 }
 
 /////////////////////////////////////////////////////////////////
 // Пузырьковая сортировка части массива
 // Особенность - поддерживат циклическую адресацию в массиве длины n
-__device__ void device_bubble_sort(byte *arr, int index, int len, int n, size_t size, int direction)
+template<class T>
+__device__ void device_bubble_sort(T *data, int index, int len, int n, int direction)
 {
-	assert(len > 0);
-
 	if (index+len <= n) {
 		for(int i = index ; i < index+len-1 ; i++ ) {
 			for(int j = i + 1 ; j < index+len ; j++ ) {
-				int value = direction*(_comparer)(&arr[i*size],&arr[j*size],size);
-				if (value < 0) device_exchange(&arr[i*size],&arr[j*size],size);
+				int value = direction*fn_comparer(&data[i],&data[j]);
+				if (value < 0) device_exchange<T>(&data[i],&data[j],1);
 			}
 		}
 	} else {
 		for(int i = 0 ; i < ((index+len) % n) ; i++ ) {
 			for(int j = i + 1 ; j <= ((index+len)%n) ; j++ ) {
-				int value = direction*(_comparer)(&arr[i*size],&arr[j*size],size);
-				if (value < 0) device_exchange(&arr[i*size],&arr[j*size],size);
+				int value = direction*fn_comparer(&data[i],&data[j]);
+				if (value < 0) device_exchange<T>(&data[i],&data[j],1);
 			}
 			for(int j = index ; j < n ; j++ ) {
-				int value = direction*(_comparer)(&arr[i*size],&arr[j*size],size);
-				if (value < 0) device_exchange(&arr[i*size],&arr[j*size],size);
+				int value = direction*fn_comparer(&data[i],&data[j]);
+				if (value < 0) device_exchange<T>(&data[i],&data[j],1);
 			}
 		}
 		for(int i = index ; i < n-1 ; i++ ) {
 			for(int j = i + 1 ; j < n ; j++ ) {
-				int value = direction*(_comparer)(&arr[i*size],&arr[j*size],size);
-				if (value < 0) device_exchange(&arr[i*size],&arr[j*size],size);
+				int value = direction*fn_comparer(&data[i],&data[j]);
+				if (value < 0) device_exchange<T>(&data[i],&data[j],1);
 			}
 		}
 	}
@@ -234,6 +249,8 @@ __device__ void device_bubble_sort(byte *arr, int index, int len, int n, size_t 
 
 int main(int argc, char* argv[])
 {
+	std::cout << title << std::endl;
+
 	// Find/set the device.
 	int device_count = 0;
 	cudaGetDeviceCount(&device_count);
@@ -244,31 +261,33 @@ int main(int argc, char* argv[])
 		std::cout << "Running on GPU " << i << " (" << properties.name << ")" << std::endl;
 	}
 
-	_comparer = device_integer_comparer;
-	_indexator = device_integer_indexator;
-	_non_parallel_sort = device_bubble_sort;
-	_parallel_sort = host_bucket_sort;
-
-	for(int n = 10 ; n < 10000 ; n *= 10 )
+	for (int n = 100, tests = 100; n <= 1000; n += 100, tests = ((tests>>1)+10))
 	{
 		// Создаём массив длины n чисел типа long
-		// Заполняем массив псевдо-случайными значениями используя функцию rand
-
 		long *arr = (long *)malloc(n*sizeof(long));
-		for (int i = 0; i<n; i++) { arr[i] = rand(); }
 
-		// Сортируем массив по возрастанию
-		time_t start = time(NULL);
-		(*_parallel_sort)(arr, n, sizeof(long), 1);
-		time_t end = time(NULL);
-
-		// Проверяем
+		float total_time = 0.0;
 		bool check = true;
-		for(int i = 0 ; ( i < (n-1) ) && check; i++ ) 
-			check = (arr[i] <= arr[i+1]);
 
-		std::cout << "n = " << n << "\t" << "time = " << (end - start) << "\t" << "results :" << (check ? "ok" : "fail") << std::endl;
-	
+		for(int j = 0; j < tests ; j++ ) {
+			// Заполняем массив псевдо-случайными значениями используя функцию rand
+			for (int i = 0; i<n; i++) { arr[i] = rand(); }
+
+			// Сортируем массив по возрастанию
+		
+			time_t start = time(NULL);
+			fn_parallel_sort(arr, n, 1);
+			time_t end = time(NULL);
+
+			total_time += (end - start);
+
+			// Проверяем
+			for (int i = 0; (i < (n - 1)) && check; i++)
+				check = (arr[i] <= arr[i + 1]);
+		}
+		std::cout << "array size = " << n << "\t" << "avg time = " << (total_time/tests) << "\t" << "check result = " << (check ? "ok" : "fail") << "\t";
+		for (int i = 0; i<n && i<24; i++) std::cout << arr[i] << ","; std::cout << " ..." << std::endl;
+
 		// Высвобождаем массив
 		free(arr);
 	}
