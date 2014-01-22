@@ -1,6 +1,0 @@
-bitonic.cu(85): warning: variable "err" was set but never used
-          detected during instantiation of "void host_bitonic_sort(T *, int, int) [with T=long]" 
-(237): here
-
-bitonic.cu(85): warning: variable "err" was set but never used
-
