@@ -30,6 +30,8 @@ char *description = "Сортировка четно-нечетными перестановками (odd-even sort)";
 #include <stdlib.h> 
 #include <mpi.h> 
 
+#define DATA_TAG 1
+
 #ifndef max
 	#define max( a, b ) ( ((a) > (b)) ? (a) : (b) )
 #endif
@@ -49,6 +51,20 @@ int desc_order(const void *e1, const void *e2)
 	return (*((int *)e2) - *((int *)e1)); 
 }
 
+/* Перестановка двух элкментов в массиве */
+void exchange(const void *e1, const void *e2) 
+{ 
+	int x = *((int *)e1) ; *((int *)e1) = *((int *)e2); *((int *)e2) = x;
+}
+/* Копирование элементов */
+void copy(const void *e1, const void *e2, int count) 
+{ 
+	int i;
+	for(i = 0 ; i < count ; i++) {
+		((int *)e1)[i] = ((int *)e2)[i];
+	}
+}
+
 main(int argc, char *argv[]) 
 { 
 	int n;         /* Размер сортируемого массива */ 
@@ -57,7 +73,7 @@ main(int argc, char *argv[])
 	int maxnlocal;    /* Максимальное количество элементов, хранимых локально */ 
 	int nlocal;    /* Количество элементов, хранимых локально */ 
 	int nremote;    /* Количество элементов, полученных при операции обмена от соседа */ 
-	int *elements;   /* Массив элементов, хранимые локально */ 
+	int *elements[2];   /* Массив элементов, хранимые локально */ 
 	int oddrank;   /* Номер соседа при нечётной фазе обмена */ 
 	int evenrank;  /* Номер соседа при чётной фазе обмена */ 
 	int direction; /* Порядок сортировки 1 - по возрастанию, -1 по убыванию */
@@ -84,9 +100,11 @@ main(int argc, char *argv[])
 
 	/* Выделяем память под хранение данных */ 
 	if (myrank == 0) {
-		elements  = (int *)malloc(max(n*sizeof(int),2*maxnlocal*sizeof(int))); 
+		elements[0]  = (int *)malloc(max(n*sizeof(int),2*maxnlocal*sizeof(int))); 
+		elements[1]  = (int *)malloc(max(n*sizeof(int),2*maxnlocal*sizeof(int))); 
 	} else {
-		elements  = (int *)malloc(2*maxnlocal*sizeof(int)); 
+		elements[0]  = (int *)malloc(2*maxnlocal*sizeof(int)); 
+		elements[1]  = (int *)malloc(2*maxnlocal*sizeof(int)); 
 	}
 	
 	if (elements) {
@@ -94,7 +112,7 @@ main(int argc, char *argv[])
 		/* Операция выполняетя только на ведущем процессе */ 
 		if (myrank == 0) {
 			for (i=0; i<n; i++) {
-				elements[i] = random(); 
+				elements[0][i] = random(); 
 			}
 		}
 	} else {
@@ -102,6 +120,7 @@ main(int argc, char *argv[])
 	}
 
 	/* Распределям данные между процессами */
+	/* Начальные данные лежат в массиве elements[0] главного процесса */
 	/* Количество данных полученных одним прцессом может различатся */
 	/* поскольку размер исходных данных может быть не кратным количеиву процессов */
 	if (myrank == 0) {
@@ -109,12 +128,12 @@ main(int argc, char *argv[])
 		for(i=nrank; i>1 ; i--) {
 			nremote = (int)nlocal/i;
 			nlocal -= nremote;
-			MPI_Send(&nremote, 1, MPI_INT, i-1, 1, MPI_COMM_WORLD); /* Уведомляем о количестве передаваемых данных */
-			if(nremote > 0) MPI_Send(&elements[nlocal], nremote, MPI_INT, i-1, 1, MPI_COMM_WORLD); /* Отправляем данные */
+			MPI_Send(&nremote, 1, MPI_INT, i-1, DATA_TAG, MPI_COMM_WORLD); /* Уведомляем о количестве передаваемых данных */
+			if(nremote > 0) MPI_Send(&elements[0][nlocal], nremote, MPI_INT, i-1, DATA_TAG, MPI_COMM_WORLD); /* Отправляем данные */
 		}
 	} else {
 		MPI_Recv(&nlocal, 1, MPI_INT, 0, 1, MPI_COMM_WORLD, &status); 
-		if(nlocal > 0) MPI_Recv(elements, maxnlocal, MPI_INT, 0, 1, MPI_COMM_WORLD, &status); 
+		if(nlocal > 0) MPI_Recv(elements[0], maxnlocal, MPI_INT, 0, DATA_TAG, MPI_COMM_WORLD, &status); 
 	}
 
 	printf("Process %d local array size : %d\n", myrank, nlocal);
@@ -137,23 +156,32 @@ main(int argc, char *argv[])
 
 	/* Выполняем предварительный цикл алгоритма */ 
 
-	qsort(elements, nlocal, sizeof(int), ((direction>0)?asc_order:desc_order)); 
+	qsort(elements[0], nlocal, sizeof(int), ((direction>0)?asc_order:desc_order)); 
 
 	/* Выполняем основной цикл алгоритма */ 
 	for (i=0; i<nrank; i++) { 
 		int neigborrank = (i%2 == 1)?oddrank:evenrank;
 		nremote = 0;
 		/* Обмениваемся информацией о количестве данных */
-		MPI_Sendrecv(&nlocal, 1, MPI_INT, neigborrank, 1, &nremote, 1, MPI_INT, neigborrank, 1, MPI_COMM_WORLD, &status); 
+		MPI_Sendrecv(&nlocal, 1, MPI_INT, neigborrank, DATA_TAG, &nremote, 1, MPI_INT, neigborrank, DATA_TAG, MPI_COMM_WORLD, &status); 
 		/* Обмениваемся данными - полученные данные загружаем в конец локального массива */
-		MPI_Sendrecv(elements, maxnlocal, MPI_INT, neigborrank, 1, &elements[nlocal], maxnlocal, MPI_INT, neigborrank, 1, MPI_COMM_WORLD, &status); 
+		MPI_Sendrecv(elements[i&1], maxnlocal, MPI_INT, neigborrank, DATA_TAG, &elements[i&1][nlocal], maxnlocal, MPI_INT, neigborrank, DATA_TAG, MPI_COMM_WORLD, &status); 
 		
 		printf("Process %d iteraction %d recieved %d items from %d\n", myrank, i, nremote, neigborrank);
 
-		/* Сортируем локальные и полученные элементы */
-		/* Для упрощения программы используем функцию qsort */
-		/* хотя можно использовать алгоритм слияния двух уже отсортированных массивов */
-		qsort(elements, nlocal+nremote, sizeof(int), ((direction>0)?asc_order:desc_order)); 
+		// Запускаем алгоритм для слияния отсортированных частей массива
+		int total = nlocal+nremote;
+		int size0 = nlocal;
+		int size1 = nremote;
+		int index0 = 0;
+		int index1 = nlocal;
+		while( ( size0 > 0 ) && ( size1 > 0 )) {
+			int value = direction*asc_order(&elements[i&1][index0+size0-1],&elements[i&1][index1+size1-1]);
+			if (value > 0) { copy(&elements[1-(i&1)][--total],&elements[i&1][index0+(--size0)],1); }
+			else { copy(&elements[1-(i&1)][--total],&elements[i&1][index1+(--size1)],1); }
+		}
+		copy(&elements[1-(i&1)][total-size0],&elements[i&1][index0],size0); 
+		copy(&elements[1-(i&1)][total-size0-size1],&elements[i&1][index1],size1); 
 
 		/* Оставляем у себя только левую или правую часть в зависимости от чётности шага и номера процесса */
 		if ( (myrank < neigborrank) && (myrank < nrank-1) ) { 
@@ -162,7 +190,7 @@ main(int argc, char *argv[])
 		} else if ( (myrank > neigborrank) && (myrank > 0) ) {
 			/* Был обмен с процессом слева */ 
 			/* Данные лежат в конце объединёного массива - перемещаем их в начало массива */
-			for(j=0;j<nlocal; j++) elements[j] = elements[j+nremote];
+			copy(&elements[1-(i&1)][0],&elements[1-(i&1)][nremote],nlocal); 
 		}
 	} 
 
@@ -171,28 +199,31 @@ main(int argc, char *argv[])
 		for(i=1; i<nrank ; i++) {
 			nremote = 0;
 			MPI_Recv(&nremote, 1, MPI_INT, i, 1, MPI_COMM_WORLD, &status); 
-			if(nremote > 0) MPI_Recv(&elements[nlocal], nremote, MPI_INT, i, 1, MPI_COMM_WORLD, &status);
+			if(nremote > 0) MPI_Recv(&elements[nrank&1][nlocal], nremote, MPI_INT, i, 1, MPI_COMM_WORLD, &status);
 			nlocal += nremote;
 		}
 	} else {
 		MPI_Send(&nlocal, 1, MPI_INT, 0, 1, MPI_COMM_WORLD); /* Уведомляем о количестве передаваемых данных */
-		if(nlocal > 0) MPI_Send(elements, nlocal, MPI_INT, 0, 1, MPI_COMM_WORLD); /* Отправляем данные */			 
+		if(nlocal > 0) MPI_Send(elements[nrank&1], nlocal, MPI_INT, 0, 1, MPI_COMM_WORLD); /* Отправляем данные */			 
 	}
 
+		
 	/* Проверяем и выводим результаты */
+	/* Результаты сортировки лежат в массиве elements[nrank&1] */
 	if (myrank == 0) {
 		int check = 1;
 		for(i=1; i<n && check ;i++) {
-			check = (direction*asc_order(&elements[i-1],&elements[i]) <= 0)?1:0;
+			check = (direction*asc_order(&elements[nrank&1][i-1],&elements[nrank&1][i])<= 0)?1:0;
 		}
 		
 		printf("Check :\t%s\n", (check?"ok":"fail"));
 
-		for(i=0; i<n && i<20;i++) {	printf("%d,",elements[i]); } printf("...\n");
+		for(i=0; i<n && i<20;i++) {	printf("%d,",elements[nrank&1][i]); } printf("...\n");
 	} 
 
 	/* Освобождаем ранее выделенные ресурсы */
-	free(elements); 
+	free(elements[1]); 
+	free(elements[0]); 
 
 	MPI_Finalize(); 
 

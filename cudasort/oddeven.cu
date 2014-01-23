@@ -205,22 +205,18 @@ __global__ void global_oddeven_worker(
 		while(size_left > 0 && size_right > 0) {
 			int value = direction*fn_comparer(&data0[index_left+size_left-1],&data0[index_right+size_right-1]);
 			if (value < 0) {
-				device_copy<T>(&data1[(total1>0)?(start1+total1-1):(start0+total0-1)],&data0[index_right+size_right-1],1);
-				size_right--;
+				device_copy<T>(&data1[(total1>0)?(start1+total1-1):(start0+total0-1)],&data0[index_right+(--size_right)],1);
 			} else {
-				device_copy<T>(&data1[(total1>0)?(start1+total1-1):(start0+total0-1)],&data0[index_left+size_left-1],1);
-				size_left--;
+				device_copy<T>(&data1[(total1>0)?(start1+total1-1):(start0+total0-1)],&data0[index_left+(--size_left)],1);
 			} 
 			if (total1 > 0) total1--; else total0--;
 		}
 		while(size_left > 0) {
-			device_copy<T>(&data1[(total1>0)?(start1+total1-1):(start0+total0-1)],&data0[index_left+size_left-1],1);
-			size_left--;
+			device_copy<T>(&data1[(total1>0)?(start1+total1-1):(start0+total0-1)],&data0[index_left+(--size_left)],1);
 			if (total1 > 0) total1--; else total0--;
 		}
 		while(size_right > 0) {
-			device_copy<T>(&data1[(total1>0)?(start1+total1-1):(start0+total0-1)],&data0[index_right+size_right-1],1);
-			size_right--;
+			device_copy<T>(&data1[(total1>0)?(start1+total1-1):(start0+total0-1)],&data0[index_right+(--size_right)],1);
 			if (total1 > 0) total1--; else total0--;
 		}
 		

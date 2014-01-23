@@ -184,7 +184,7 @@ __global__ void global_bitonic_worker(
 		// Получаем идентификатор шага цикла
 		int id = block*loops+y;
 		int offset = ((id>>j)<<(j+1))+(id&((1<<j)-1));
-		int parity = id >> i;
+		int parity = (id >> i);
 		while(parity>1) parity = (parity>>1) ^ (parity&1);
 		parity = 1-(parity<<1); // теперь переменная parity может иметь только 2 значения 1 и -1
 
