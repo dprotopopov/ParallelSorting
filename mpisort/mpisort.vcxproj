@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bitonic.c" />
+    <ClCompile Include="bucket.c" />
     <ClCompile Include="oddeven.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

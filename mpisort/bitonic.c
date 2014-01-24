@@ -107,7 +107,7 @@ void Mn(int *elements, int k, int direction,int myrank,int nrank,int i) {
 
 		/* Получим обработанные элементы обратно */
 		MPI_Recv(&elements[1<<k], 1<<k, MPI_INT, child, DATA_TAG, MPI_COMM_WORLD, &status);
-		
+
 	} else if (k>0) {
 		/* Обрабатываем всё сами */
 		Mn(elements,k-1,direction,myrank,nrank,i);
@@ -181,8 +181,8 @@ main(int argc, char *argv[])
 			for (i = k; i-- ; ) {
 				if (size[i] > 0 &&	
 					direction*asc_order(
-						&elements[0][(n&((1<<k)-1))+size[k]-1],
-						&elements[0][(n&((1<<i)-1))+size[i]-1]) < 0)
+					&elements[0][(n&((1<<k)-1))+size[k]-1],
+					&elements[0][(n&((1<<i)-1))+size[i]-1]) < 0)
 				{
 					k = i;
 				}

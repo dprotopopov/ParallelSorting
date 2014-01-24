@@ -33,60 +33,60 @@ char *description = "Сортировка четно-нечетными перестановками (odd-even sort)";
 #define DATA_TAG 1
 
 #ifndef max
-	#define max( a, b ) ( ((a) > (b)) ? (a) : (b) )
+#define max( a, b ) ( ((a) > (b)) ? (a) : (b) )
 #endif
 
 #ifndef min
-	#define min( a, b ) ( ((a) < (b)) ? (a) : (b) )
+#define min( a, b ) ( ((a) < (b)) ? (a) : (b) )
 #endif
 
-/* Фунция сравнения двух элементов для определения порядка сортировки */ 
+/* Фунция сравнения двух элементов для определения порядка сортировки */
 /* Возвращает <0 если e1 предшедствует e2, 0 если елементы равны и >0 если e2 предшедствует e1 */
-int asc_order(const void *e1, const void *e2) 
-{ 
-	return (*((int *)e1) - *((int *)e2)); 
+int asc_order(const void *e1, const void *e2)
+{
+	return (*((int *)e1) - *((int *)e2));
 }
-int desc_order(const void *e1, const void *e2) 
-{ 
-	return (*((int *)e2) - *((int *)e1)); 
+int desc_order(const void *e1, const void *e2)
+{
+	return (*((int *)e2) - *((int *)e1));
 }
 
 /* Перестановка двух элкментов в массиве */
-void exchange(const void *e1, const void *e2) 
-{ 
-	int x = *((int *)e1) ; *((int *)e1) = *((int *)e2); *((int *)e2) = x;
+void exchange(const void *e1, const void *e2)
+{
+	int x = *((int *)e1); *((int *)e1) = *((int *)e2); *((int *)e2) = x;
 }
 /* Копирование элементов */
-void copy(const void *e1, const void *e2, int count) 
-{ 
+void copy(const void *e1, const void *e2, int count)
+{
 	int i;
-	for(i = 0 ; i < count ; i++) {
+	for (i = 0; i < count; i++) {
 		((int *)e1)[i] = ((int *)e2)[i];
 	}
 }
 
-main(int argc, char *argv[]) 
-{ 
-	int n;         /* Размер сортируемого массива */ 
-	int nrank;      /* Общее количество процессов */ 
-	int myrank;    /* Номер текущего процесса */ 
-	int maxnlocal;    /* Максимальное количество элементов, хранимых локально */ 
-	int nlocal;    /* Количество элементов, хранимых локально */ 
-	int nremote;    /* Количество элементов, полученных при операции обмена от соседа */ 
-	int *elements[2];   /* Массив элементов, хранимые локально */ 
-	int oddrank;   /* Номер соседа при нечётной фазе обмена */ 
-	int evenrank;  /* Номер соседа при чётной фазе обмена */ 
+main(int argc, char *argv[])
+{
+	int n;         /* Размер сортируемого массива */
+	int nrank;      /* Общее количество процессов */
+	int myrank;    /* Номер текущего процесса */
+	int maxnlocal;    /* Максимальное количество элементов, хранимых локально */
+	int nlocal;    /* Количество элементов, хранимых локально */
+	int nremote;    /* Количество элементов, полученных при операции обмена от соседа */
+	int *elements[2];   /* Массив элементов, хранимые локально */
+	int oddrank;   /* Номер соседа при нечётной фазе обмена */
+	int evenrank;  /* Номер соседа при чётной фазе обмена */
 	int direction; /* Порядок сортировки 1 - по возрастанию, -1 по убыванию */
-	int i, j; 
+	int i, j;
 	int start, end;
-	MPI_Status status; 
+	MPI_Status status;
 
-	/* Иницилизация MPI */ 
-	MPI_Init(&argc, &argv); 
-	MPI_Comm_size(MPI_COMM_WORLD, &nrank); 
-	MPI_Comm_rank(MPI_COMM_WORLD, &myrank); 
+	/* Иницилизация MPI */
+	MPI_Init(&argc, &argv);
+	MPI_Comm_size(MPI_COMM_WORLD, &nrank);
+	MPI_Comm_rank(MPI_COMM_WORLD, &myrank);
 
-	n = atoi(argv[1]); 
+	n = atoi(argv[1]);
 	direction = 1;
 
 	if (myrank == 0) {
@@ -94,140 +94,140 @@ main(int argc, char *argv[])
 		printf("Description :\t%s\n", description);
 		printf("Number of processes :\t%d\n", nrank);
 		printf("Array size :\t%d\n", n);
-	} 
-
-	maxnlocal = (int)((n+nrank-1)/nrank); /* Вычисляем максимальное количество элементов хранимых одним процессом */ 
-
-	/* Выделяем память под хранение данных */ 
-	if (myrank == 0) {
-		elements[0]  = (int *)malloc(max(n*sizeof(int),2*maxnlocal*sizeof(int))); 
-		elements[1]  = (int *)malloc(max(n*sizeof(int),2*maxnlocal*sizeof(int))); 
-	} else {
-		elements[0]  = (int *)malloc(2*maxnlocal*sizeof(int)); 
-		elements[1]  = (int *)malloc(2*maxnlocal*sizeof(int)); 
 	}
-	
+
+	maxnlocal = (int)((n + nrank - 1) / nrank); /* Вычисляем максимальное количество элементов хранимых одним процессом */
+
+	/* Выделяем память под хранение данных */
+	if (myrank == 0) {
+		elements[0] = (int *)malloc(max(n*sizeof(int), 2 * maxnlocal*sizeof(int)));
+		elements[1] = (int *)malloc(max(n*sizeof(int), 2 * maxnlocal*sizeof(int)));
+	}
+	else {
+		elements[0] = (int *)malloc(2 * maxnlocal*sizeof(int));
+		elements[1] = (int *)malloc(2 * maxnlocal*sizeof(int));
+	}
+
 	if (elements) {
-		/* Заполняем массив псевдо-случайными числами */ 
-		/* Операция выполняетя только на ведущем процессе */ 
+		/* Заполняем массив псевдо-случайными числами */
+		/* Операция выполняетя только на ведущем процессе */
 		if (myrank == 0) {
-			for (i=0; i<n; i++) {
-				elements[0][i] = random(); 
+			for (i = 0; i < n; i++) {
+				elements[0][i] = random();
 			}
 		}
-	} else {
-		printf("Prosess %d malloc error\n", myrank);
 	}
 
 	/* Распределям данные между процессами */
-	/* Начальные данные лежат в массиве elements[0] главного процесса */
+	/* Начальные данные лежат в массиве elements главного процесса */
 	/* Количество данных полученных одним прцессом может различатся */
 	/* поскольку размер исходных данных может быть не кратным количеиву процессов */
 	if (myrank == 0) {
 		nlocal = n;
-		for(i=nrank; i>1 ; i--) {
-			nremote = (int)nlocal/i;
+		for (i = nrank; i > 1; i--) {
+			nremote = (int)nlocal / i;
 			nlocal -= nremote;
-			MPI_Send(&nremote, 1, MPI_INT, i-1, DATA_TAG, MPI_COMM_WORLD); /* Уведомляем о количестве передаваемых данных */
-			if(nremote > 0) MPI_Send(&elements[0][nlocal], nremote, MPI_INT, i-1, DATA_TAG, MPI_COMM_WORLD); /* Отправляем данные */
+			MPI_Send(&nremote, 1, MPI_INT, i - 1, DATA_TAG, MPI_COMM_WORLD); /* Уведомляем о количестве передаваемых данных */
+			if (nremote > 0) MPI_Send(&elements[0][nlocal], nremote, MPI_INT, i - 1, DATA_TAG, MPI_COMM_WORLD); /* Отправляем данные */
 		}
-	} else {
-		MPI_Recv(&nlocal, 1, MPI_INT, 0, 1, MPI_COMM_WORLD, &status); 
-		if(nlocal > 0) MPI_Recv(elements[0], maxnlocal, MPI_INT, 0, DATA_TAG, MPI_COMM_WORLD, &status); 
+	}
+	else {
+		MPI_Recv(&nlocal, 1, MPI_INT, 0, 1, MPI_COMM_WORLD, &status);
+		if (nlocal > 0) MPI_Recv(elements[0], maxnlocal, MPI_INT, 0, DATA_TAG, MPI_COMM_WORLD, &status);
 	}
 
-	printf("Process %d local array size : %d\n", myrank, nlocal);
+	/* Определяем номера процессов, используемых при операциях обмена с соседом */
+	if (myrank % 2 == 0) {
+		oddrank = myrank - 1;
+		evenrank = myrank + 1;
+	}
+	else {
+		oddrank = myrank + 1;
+		evenrank = myrank - 1;
+	}
 
-	/* Определяем номера процессов, используемых при операциях обмена с соседом */ 
-	if (myrank%2 == 0) { 
-		oddrank  = myrank-1; 
-		evenrank = myrank+1; 
-	} 
-	else { 
-		oddrank  = myrank+1; 
-		evenrank = myrank-1; 
-	} 
+	/* Поскольку мы не можем гарантировать чётное количество процессов, то организуем процессы в линейную схему */
+	if (oddrank == -1 || oddrank == nrank)
+		oddrank = MPI_PROC_NULL;
+	if (evenrank == -1 || evenrank == nrank)
+		evenrank = MPI_PROC_NULL;
 
-	/* Поскольку мы не можем гарантировать чётное количество процессов, то организуем процессы в линейную схему */ 
-	if (oddrank == -1 || oddrank == nrank) 
-		oddrank = MPI_PROC_NULL; 
-	if (evenrank == -1 || evenrank == nrank) 
-		evenrank = MPI_PROC_NULL; 
+	/* Выполняем предварительный цикл алгоритма */
 
-	/* Выполняем предварительный цикл алгоритма */ 
+	qsort(elements[0], nlocal, sizeof(int), ((direction > 0) ? asc_order : desc_order));
 
-	qsort(elements[0], nlocal, sizeof(int), ((direction>0)?asc_order:desc_order)); 
-
-	/* Выполняем основной цикл алгоритма */ 
-	for (i=0; i<nrank; i++) { 
-		int neigborrank = (i%2 == 1)?oddrank:evenrank;
+	/* Выполняем основной цикл алгоритма */
+	for (i = 0; i < nrank; i++) {
+		int neigborrank = (i % 2 == 1) ? oddrank : evenrank;
 		nremote = 0;
 		/* Обмениваемся информацией о количестве данных */
-		MPI_Sendrecv(&nlocal, 1, MPI_INT, neigborrank, DATA_TAG, &nremote, 1, MPI_INT, neigborrank, DATA_TAG, MPI_COMM_WORLD, &status); 
+		MPI_Sendrecv(&nlocal, 1, MPI_INT, neigborrank, DATA_TAG, &nremote, 1, MPI_INT, neigborrank, DATA_TAG, MPI_COMM_WORLD, &status);
 		/* Обмениваемся данными - полученные данные загружаем в конец локального массива */
-		MPI_Sendrecv(elements[i&1], maxnlocal, MPI_INT, neigborrank, DATA_TAG, &elements[i&1][nlocal], maxnlocal, MPI_INT, neigborrank, DATA_TAG, MPI_COMM_WORLD, &status); 
-		
+		MPI_Sendrecv(elements[i & 1], maxnlocal, MPI_INT, neigborrank, DATA_TAG, &elements[i & 1][nlocal], maxnlocal, MPI_INT, neigborrank, DATA_TAG, MPI_COMM_WORLD, &status);
+
 		printf("Process %d iteraction %d recieved %d items from %d\n", myrank, i, nremote, neigborrank);
 
 		// Запускаем алгоритм для слияния отсортированных частей массива
-		int total = nlocal+nremote;
+		int total = nlocal + nremote;
 		int size0 = nlocal;
 		int size1 = nremote;
 		int index0 = 0;
 		int index1 = nlocal;
-		while( ( size0 > 0 ) && ( size1 > 0 )) {
-			int value = direction*asc_order(&elements[i&1][index0+size0-1],&elements[i&1][index1+size1-1]);
-			if (value > 0) { copy(&elements[1-(i&1)][--total],&elements[i&1][index0+(--size0)],1); }
-			else { copy(&elements[1-(i&1)][--total],&elements[i&1][index1+(--size1)],1); }
+		while ((size0 > 0) && (size1 > 0)) {
+			int value = direction*asc_order(&elements[i & 1][index0 + size0 - 1], &elements[i & 1][index1 + size1 - 1]);
+			if (value > 0) { copy(&elements[1 - (i & 1)][--total], &elements[i & 1][index0 + (--size0)], 1); }
+			else { copy(&elements[1 - (i & 1)][--total], &elements[i & 1][index1 + (--size1)], 1); }
 		}
-		copy(&elements[1-(i&1)][total-size0],&elements[i&1][index0],size0); 
-		copy(&elements[1-(i&1)][total-size0-size1],&elements[i&1][index1],size1); 
+		copy(&elements[1 - (i & 1)][total - size0], &elements[i & 1][index0], size0);
+		copy(&elements[1 - (i & 1)][total - size0 - size1], &elements[i & 1][index1], size1);
 
 		/* Оставляем у себя только левую или правую часть в зависимости от чётности шага и номера процесса */
-		if ( (myrank < neigborrank) && (myrank < nrank-1) ) { 
-			/* Был обмен с процессом справа */ 
+		if ((myrank < neigborrank) && (myrank < nrank - 1)) {
+			/* Был обмен с процессом справа */
 			/* Данные лежат в начале объединёного массива - ничего делать не надо */
-		} else if ( (myrank > neigborrank) && (myrank > 0) ) {
-			/* Был обмен с процессом слева */ 
-			/* Данные лежат в конце объединёного массива - перемещаем их в начало массива */
-			copy(&elements[1-(i&1)][0],&elements[1-(i&1)][nremote],nlocal); 
 		}
-	} 
+		else if ((myrank > neigborrank) && (myrank > 0)) {
+			/* Был обмен с процессом слева */
+			/* Данные лежат в конце объединёного массива - перемещаем их в начало массива */
+			copy(&elements[1 - (i & 1)][0], &elements[1 - (i & 1)][nremote], nlocal);
+		}
+	}
 
 	/* Собираем данные с ведомых процессов */
 	if (myrank == 0) {
-		for(i=1; i<nrank ; i++) {
+		for (i = 1; i<nrank; i++) {
 			nremote = 0;
-			MPI_Recv(&nremote, 1, MPI_INT, i, 1, MPI_COMM_WORLD, &status); 
-			if(nremote > 0) MPI_Recv(&elements[nrank&1][nlocal], nremote, MPI_INT, i, 1, MPI_COMM_WORLD, &status);
+			MPI_Recv(&nremote, 1, MPI_INT, i, 1, MPI_COMM_WORLD, &status);
+			if (nremote > 0) MPI_Recv(&elements[nrank & 1][nlocal], nremote, MPI_INT, i, 1, MPI_COMM_WORLD, &status);
 			nlocal += nremote;
 		}
-	} else {
+	}
+	else {
 		MPI_Send(&nlocal, 1, MPI_INT, 0, 1, MPI_COMM_WORLD); /* Уведомляем о количестве передаваемых данных */
-		if(nlocal > 0) MPI_Send(elements[nrank&1], nlocal, MPI_INT, 0, 1, MPI_COMM_WORLD); /* Отправляем данные */			 
+		if (nlocal > 0) MPI_Send(elements[nrank & 1], nlocal, MPI_INT, 0, 1, MPI_COMM_WORLD); /* Отправляем данные */
 	}
 
-		
+
 	/* Проверяем и выводим результаты */
 	/* Результаты сортировки лежат в массиве elements[nrank&1] */
 	if (myrank == 0) {
 		int check = 1;
-		for(i=1; i<n && check ;i++) {
-			check = (direction*asc_order(&elements[nrank&1][i-1],&elements[nrank&1][i])<= 0)?1:0;
+		for (i = 1; i < n && check; i++) {
+			check = (direction*asc_order(&elements[nrank & 1][i - 1], &elements[nrank & 1][i]) <= 0) ? 1 : 0;
 		}
-		
-		printf("Check :\t%s\n", (check?"ok":"fail"));
 
-		for(i=0; i<n && i<20;i++) {	printf("%d,",elements[nrank&1][i]); } printf("...\n");
-	} 
+		printf("Check :\t%s\n", (check ? "ok" : "fail"));
+
+		for (i = 0; i < n && i < 20; i++) { printf("%d,", elements[nrank & 1][i]); } printf("...\n");
+	}
 
 	/* Освобождаем ранее выделенные ресурсы */
-	free(elements[1]); 
-	free(elements[0]); 
+	free(elements[1]);
+	free(elements[0]);
 
-	MPI_Finalize(); 
+	MPI_Finalize();
 
 	exit(0);
-} 
+}
 
 
