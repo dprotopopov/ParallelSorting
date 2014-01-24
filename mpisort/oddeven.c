@@ -165,8 +165,6 @@ main(int argc, char *argv[])
 		/* ќбмениваемс€ данными - полученные данные загружаем в конец локального массива */
 		MPI_Sendrecv(elements[i & 1], maxnlocal, MPI_INT, neigborrank, DATA_TAG, &elements[i & 1][nlocal], maxnlocal, MPI_INT, neigborrank, DATA_TAG, MPI_COMM_WORLD, &status);
 
-		printf("Process %d iteraction %d recieved %d items from %d\n", myrank, i, nremote, neigborrank);
-
 		// «апускаем алгоритм дл€ сли€ни€ отсортированных частей массива
 		int total = nlocal + nremote;
 		int size0 = nlocal;
