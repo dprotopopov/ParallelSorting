@@ -1,12 +1,38 @@
-﻿nvcc oddeven.cu
+﻿Собственно я использовал VS2012 только как редактор
+
+Для компиляции требуется следующее:
+Скачать NVIDIA CUDA 5.5
+Использовать VS2010,VS2012 (версия VS2013 НЕ ПОДДЕРЖИВАЕТСЯ CUDA !!!!!!!), Express версии тоже не поддерживаются CUDA !!!!
+nvcc должен быть доступен для вызова
+Для компиляции
+nvcc -o oddeven.exe oddeven.cu
+nvcc -o bitinic.exe bitinic.cu
+nvcc -o bucket.exe bucket.cu
+Для выполнения
+oddeven.exe
+bitinic.exe
+bucket.exe
+
+
+nvcc oddeven.cu
 nvcc bitinic.cu
 nvcc bucket.cu
+
+Установить Ubuntu на виртуальной машине
+Установить реализацию MPI на свой компьютер. Одной из самых распространённых реализаций MPI является MPICH (MPI Chameleon). 
+В убунте устанавливается в одну строчку:
+sudo apt-get install mpich2
+
+Скопировать файлы на виртуальную машину или примаппировать рабочий католог на хосте 
+Для компиляции
 mpicc -o oddeven.bin ./oddeven.c
 mpicc -o bitonic.bin ./bitonic.c
 mpicc -o bucket.bin ./bucket.c
+Для выполнения
 mpirun -np 5 ./oddeven.bin 1000
 mpirun -np 5 ./bitonic.bin 1000
 mpirun -np 5 ./bucket.bin 1000
+здесь 5 - количество запускаемых процессов
 
 D:\Projects\ParallelSorting\cudasort>nvcc.exe bitonic.cu
    Создается библиотека a.lib и объект a.exp
