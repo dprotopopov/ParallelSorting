@@ -1,0 +1,15 @@
+﻿Сборка начата 17.04.2014 6:01:49.
+     1>Проект "D:\Projects\ParallelSorting\mpibucket\mpibucket.vcxproj" в узле 2 (целевые объекты Rebuild).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt bucket.cpp
+         bucket.cpp
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\Projects\ParallelSorting\Release\mpibucket.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:"C:\Program Files\Microsoft MPI\Lib\i386" /LIBPATH:"C:\Program Files\Microsoft MPI\Lib" msmpi.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\Projects\ParallelSorting\Release\mpibucket.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\Projects\ParallelSorting\Release\mpibucket.lib" /MACHINE:X86 /SAFESEH Release\bucket.obj
+         Создание кода
+         Создание кода завершено
+         mpibucket.vcxproj -> D:\Projects\ParallelSorting\Release\mpibucket.exe
+     1>Сборка проекта "D:\Projects\ParallelSorting\mpibucket\mpibucket.vcxproj" завершена (целевые объекты Rebuild).
+
+Сборка успешно завершена.
+
+Затраченное время: 00:00:01.23

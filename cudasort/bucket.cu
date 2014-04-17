@@ -24,9 +24,11 @@ template<class T>__device__ void device_copy(T *x, T *y, int count);
 template<class T> __device__ int device_comparer(T *x, T *y);
 template<class T> __device__ int device_indexator(T *x, int index, int len);
 template<class T> __device__ void device_bubble_sort(T *data, int index, int len, int n, int direction);
-template<class T> __global__ void global_bucket_worker_collect(T * data, T * bucket, int * sizes, int n, int index,	int len, int direction);
-template<class T> __global__ void global_bucket_worker_sort(T * data, T * bucket, int * sizes, int n, int index,	int len, int direction);
-template<class T> __global__ void global_bucket_worker_merge(T * data, T * bucket, int * sizes, int n, int index,	int len, int direction);
+template<class T> __global__ void global_bucket_worker_collect(T * data, T * bucket, int * sizes, int * offsets, int n, int index, int len, int direction);
+template<class T> __global__ void global_bucket_worker_sort(T * data, T * bucket, int * sizes, int * offsets, int n, int index, int len, int direction);
+template<class T> __global__ void global_bucket_worker_count(T * data, T * bucket, int * sizes, int * offsets, int n, int index, int len, int direction);
+template<class T> __global__ void global_bucket_worker_size(T * data, T * bucket, int * sizes, int * offsets, int n, int index, int len, int direction);
+template<class T> __global__ void global_bucket_worker_offset(T * data, T * bucket, int * sizes, int * offsets, int n, int index, int len, int direction);
 template<class T> __host__ void host_bucket_sort(T *data, int n, int direction);
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -53,7 +55,8 @@ __host__ void host_bucket_sort(T *data, int n, int direction)
 	cudaError_t err;
 	T *device_data;
 	T *device_bucket;
-	int *device_size;
+	int *device_offset; // Смещение начала корзины
+	int *device_size; // Размер корзины
 
 	// Шаг первый - копируем исходный массив в память GPU 
 
@@ -62,38 +65,45 @@ __host__ void host_bucket_sort(T *data, int n, int direction)
 
 	// Определим оптимальноe количество корзин и парамерты индексатора
 
-	int number = 2; while (number<n && number<5) number++;
-	
-	int len = 1 ; while ((1<<len)<number) len++;
-	int index = 8*sizeof(T)-len;
+
+	int len = 0; while ((1 << (++len))<n); len = (int)(2*(len + 1) / 3);
+	int index = 8 * sizeof(T)-len;
 
 	// Шаг второй - выделяем память под корзины 
 	
-	err = cudaMalloc((void**)&device_bucket, (n<<len)*sizeof(T));
+	err = cudaMalloc((void**)&device_bucket, n*sizeof(T));
 	err = cudaMalloc((void**)&device_size, (1<<len)*sizeof(int));
+	err = cudaMalloc((void**)&device_offset, ((1 << len) + 1)*sizeof(int));
 
 	// Определим оптимальное разбиения на процессы, нити
 
-	int blocks = 1 << (len>>1);
-	int threads = 1 << (len-(len>>1));
+	int blocks = min(15, 1 << (int)(len / 3));
+	int threads = min(15, 1 << (int)(len / 3));
 
 	// Шаг трeтий - применяем алгоритм
+	// Заполнение корзин производим в 2 прохода
+	// На первом проходе подсчитываем количество элементов в каждой корзине
+	// На втором проходе собственно заполняем корзины
 
-	assert((1<<len) == blocks*threads);
+	assert((1<<(2*len/3)) == blocks*threads);
 
-	global_bucket_worker_collect <<< blocks, threads >>>(device_data, device_bucket, device_size, n, index, len, direction);
-	global_bucket_worker_sort <<< blocks, threads >>>(device_data, device_bucket, device_size, n, index, len, direction);
-	global_bucket_worker_merge <<< 1, 1 >>>(device_data, device_bucket, device_size, n, index, len, direction);
+	global_bucket_worker_count <<< blocks, threads >>>(device_data, device_bucket, device_size, device_offset, n, index, len, direction);
+	global_bucket_worker_offset <<< 1, 1 >>>(device_data, device_bucket, device_size, device_offset, n, index, len, direction);
+	global_bucket_worker_collect <<< blocks, threads >>>(device_data, device_bucket, device_size, device_offset, n, index, len, direction);
+	global_bucket_worker_size <<< blocks, threads >>>(device_data, device_bucket, device_size, device_offset, n, index, len, direction);
+	global_bucket_worker_sort <<< blocks, threads >>>(device_data, device_bucket, device_size, device_offset, n, index, len, direction);
 
 	// Возвращаем результаты в исходный массив
+	// Подмассивы уже объединены в памяти
 
-	cudaMemcpy(data, device_data, n*sizeof(T), cudaMemcpyDeviceToHost);
+	cudaMemcpy(data, device_bucket, n*sizeof(T), cudaMemcpyDeviceToHost);
 
 	// Освобождаем память на устройстве
 
-	cudaFree(device_data);
-	cudaFree(device_bucket);
+	cudaFree(device_offset);
 	cudaFree(device_size);
+	cudaFree(device_bucket);
+	cudaFree(device_data);
 
 	err = err;
 }
@@ -103,31 +113,95 @@ __host__ void host_bucket_sort(T *data, int n, int direction)
 //	адрес массива данных 
 //	адрес массива корзин 
 //	адрес массива размера корзин 
-//	Размер массива
+//	адрес массива смещения начала корзин 
 //  Параметры индексатора
 //  Размер одного элемента
 //	Направление сортировки
 template<class T>
-__global__ void global_bucket_worker_collect(
-	T * data, 
+__global__ void global_bucket_worker_count(
+	T * data,
 	T * bucket,
 	int * sizes,
+	int * offsets,
 	int n,
 	int index,
 	int len,
 	int direction)
 {
 	// Получаем идентификатор нити
-	int id = blockDim.x*blockIdx.x + threadIdx.x;
-
-	if (id < (1<<len)) {
+	for (int id = blockDim.x*blockIdx.x + threadIdx.x;
+		id < (1 << len);
+		id += blockDim.x*gridDim.x) {
 		sizes[id] = 0;
-		// Набираем товары в корзину
-		for(int i = 0; i < n; i++) {
-			if (id==fn_indexator(&data[i],index,len)) {
-				device_copy(&bucket[id*n+sizes[id]++],&data[i],1);
+		// Подсчитываем количество товаров в корзине
+		for (int i = 0; i < n; i++) {
+			if (id == fn_indexator(&data[i], index, len)) {
+				sizes[id]++;
 			}
 		}
+	}
+}
+template<class T>
+__global__ void global_bucket_worker_offset(
+	T * data,
+	T * bucket,
+	int * sizes,
+	int * offsets,
+	int n,
+	int index,
+	int len,
+	int direction)
+{
+	// Получаем идентификатор нити
+	for (int id = blockDim.x*blockIdx.x + threadIdx.x;
+		id < 1;
+		id += blockDim.x*gridDim.x) {
+		offsets[0] = 0;
+		// Подсчитываем смещение
+		for (int i = 0; i < (1<<len); i++) {
+			offsets[i + 1] = offsets[i] + sizes[i];
+		}
+	}
+}
+template<class T>
+__global__ void global_bucket_worker_collect(
+	T * data,
+	T * bucket,
+	int * sizes,
+	int * offsets,
+	int n,
+	int index,
+	int len,
+	int direction)
+{
+	// Получаем идентификатор нити
+	for (int id = blockDim.x*blockIdx.x + threadIdx.x;
+		id < (1 << len);
+		id += blockDim.x*gridDim.x) {
+		// Набираем товары в корзину
+		for (int i = 0; i < n; i++) {
+			if (id == fn_indexator(&data[i], index, len)) {
+				device_copy(&bucket[offsets[id] + --sizes[id]], &data[i], 1);
+			}
+		}
+	}
+}
+template<class T>
+__global__ void global_bucket_worker_size(
+	T * data,
+	T * bucket,
+	int * sizes,
+	int * offsets,
+	int n,
+	int index,
+	int len,
+	int direction)
+{
+	// Получаем идентификатор нити
+	for (int id = blockDim.x*blockIdx.x + threadIdx.x;
+		id < (1 << len);
+		id += blockDim.x*gridDim.x) {
+		sizes[id] = offsets[id + 1] - offsets[id];
 	}
 }
 template<class T>
@@ -135,38 +209,22 @@ __global__ void global_bucket_worker_sort(
 	T * data, 
 	T * bucket,
 	int * sizes,
+	int * offsets,
 	int n,
 	int index,
 	int len,
 	int direction)
 {
 	// Получаем идентификатор нити
-	int id = blockDim.x*blockIdx.x + threadIdx.x;
-
-	if (id < (1<<len)) {
-		fn_non_parallel_sort(bucket, id*n, sizes[id], n, direction);
-	}
-}
-template<class T>
-__global__ void global_bucket_worker_merge(
-	T * data, 
-	T * bucket,
-	int * sizes,
-	int n,
-	int index,
-	int len,
-	int direction)
-{
-	// Получаем идентификатор нити
-	int id = blockDim.x*blockIdx.x + threadIdx.x;
-
-	assert(id == 0);
-	id = id;
-
-	T * next = data;
-	for(int i=0; i < (1 << len) ; i++ ) {
-		device_copy(next,&bucket[i*n],sizes[i]);
-		next = &next[sizes[i]];
+	for (int id = blockDim.x*blockIdx.x + threadIdx.x;
+		id < (1 << len);
+		id += blockDim.x*gridDim.x) {
+		if (sizes[id] > 0) {
+			int start = offsets[id];
+			int len = sizes[id];
+			// Запускаем обычный алгоритм для сортировки части массива
+			fn_non_parallel_sort(bucket, start, len, n, direction);
+		}
 	}
 }
 
@@ -189,12 +247,13 @@ __device__ void device_copy(T *x, T *y, int count)
 }
 
 // Определение номера карзины 
-// Формируется положмтельное число из len бит с позиции index
+// Формируется положительное число из len бит с позиции index
 template<class T>
 __device__ int device_indexator(T *x, int index, int len)
 {
-	assert(index+len <= sizeof(T));
-	return (int)((((*x) >> index) + (1 << (8 * sizeof(T)-index))) & ((1 << len) - 1));
+	assert(index+len == 8*sizeof(T));
+	// Сдвигаем вправо повторяя знаковый разряд
+	return (int)((((long)*x)>>index) + (long)(1 << (len - 1)));
 }
 
 // Функция сравнения данных xранимых в памяти как целых чисел типа long
@@ -214,28 +273,29 @@ __device__ int device_comparer(T *x, T *y)
 template<class T>
 __device__ void device_bubble_sort(T *data, int index, int len, int n, int direction)
 {
-	if (index+len <= n) {
-		for(int i = index ; i < index+len-1 ; i++ ) {
-			for(int j = i + 1 ; j < index+len ; j++ ) {
-				int value = direction*fn_comparer(&data[i],&data[j]);
-				if (value > 0) device_exchange<T>(&data[i],&data[j],1);
+	if (index + len <= n) {
+		for (int i = index; i < index + len - 1; i++) {
+			for (int j = i + 1; j < index + len; j++) {
+				int value = direction*fn_comparer(&data[i], &data[j]);
+				if (value > 0) device_exchange<T>(&data[i], &data[j], 1);
 			}
 		}
-	} else {
-		for(int i = 0 ; i < ((index+len) % n) ; i++ ) {
-			for(int j = i + 1 ; j <= ((index+len)%n) ; j++ ) {
-				int value = direction*fn_comparer(&data[i],&data[j]);
-				if (value > 0) device_exchange<T>(&data[i],&data[j],1);
+	}
+	else {
+		for (int i = 0; i < ((index + len) % n); i++) {
+			for (int j = i + 1; j <= ((index + len) % n); j++) {
+				int value = direction*fn_comparer(&data[i], &data[j]);
+				if (value > 0) device_exchange<T>(&data[i], &data[j], 1);
 			}
-			for(int j = index ; j < n ; j++ ) {
-				int value = direction*fn_comparer(&data[i],&data[j]);
-				if (value > 0) device_exchange<T>(&data[i],&data[j],1);
+			for (int j = index; j < n; j++) {
+				int value = direction*fn_comparer(&data[i], &data[j]);
+				if (value > 0) device_exchange<T>(&data[i], &data[j], 1);
 			}
 		}
-		for(int i = index ; i < n-1 ; i++ ) {
-			for(int j = i + 1 ; j < n ; j++ ) {
-				int value = direction*fn_comparer(&data[i],&data[j]);
-				if (value > 0) device_exchange<T>(&data[i],&data[j],1);
+		for (int i = index; i < n - 1; i++) {
+			for (int j = i + 1; j < n; j++) {
+				int value = direction*fn_comparer(&data[i], &data[j]);
+				if (value > 0) device_exchange<T>(&data[i], &data[j], 1);
 			}
 		}
 	}
@@ -255,7 +315,7 @@ int main(int argc, char* argv[])
 		std::cout << "Running on GPU " << i << " (" << properties.name << ")" << std::endl;
 	}
 
-	for (int n = 100, tests = 100; n <= 1000; n += 100, tests = ((tests>>1)+10))
+	for (int n = 10000, tests = 10; n <= 100000; n += 10000, tests = ((tests >> 1) + 1))
 	{
 		// Создаём массив длины n чисел типа long
 		long *arr = (long *)malloc(n*sizeof(long));
@@ -265,7 +325,7 @@ int main(int argc, char* argv[])
 
 		for(int j = 0; j < tests ; j++ ) {
 			// Заполняем массив псевдо-случайными значениями используя функцию rand
-			for (int i = 0; i<n; i++) { arr[i] = rand(); }
+			for (int i = 0; i<n; i++) { arr[i] = (rand()<<16)^rand(); }
 
 			// Сортируем массив по возрастанию
 		
@@ -279,7 +339,7 @@ int main(int argc, char* argv[])
 			for (int i = 0; (i < (n - 1)) && check; i++)
 				check = (arr[i] <= arr[i + 1]);
 		}
-		std::cout << "array size = " << n << "\t" << "avg time = " << (total_time/tests) << "\t" << "check result = " << (check ? "ok" : "fail") << "\t";
+		std::cout << "array size = " << n << "\t" << "avg time = " << (total_time / tests) << "\t" << "check result = " << (check ? "ok" : "fail") << "\t";
 		for (int i = 0; i<n && i<24; i++) std::cout << arr[i] << ","; std::cout << " ..." << std::endl;
 
 		// Высвобождаем массив
@@ -287,6 +347,5 @@ int main(int argc, char* argv[])
 	}
 
 	cudaDeviceReset();
-
 	exit(0);
 }

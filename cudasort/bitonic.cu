@@ -281,7 +281,7 @@ int main(int argc, char* argv[])
 		std::cout << "Running on GPU " << i << " (" << properties.name << ")" << std::endl;
 	}
 
-	for (int n = 10000, tests = 10; n <= 100000; n += 10000, tests = ((tests>>1)+1))
+	for (int n = 10000, tests = 10; n <= 100000; n += 10000, tests = ((tests >> 1) + 1))
 	{
 		// Создаём массив длины n чисел типа long
 		long *arr = (long *)malloc(n*sizeof(long));
@@ -291,7 +291,7 @@ int main(int argc, char* argv[])
 
 		for(int j = 0; j < tests ; j++ ) {
 			// Заполняем массив псевдо-случайными значениями используя функцию rand
-			for (int i = 0; i<n; i++) { arr[i] = rand(); }
+			for (int i = 0; i<n; i++) { arr[i] = (rand() << 16) ^ rand(); }
 
 			// Сортируем массив по возрастанию
 		
