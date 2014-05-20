@@ -1,0 +1,35 @@
+﻿Сборка начата 20.05.2014 11:24:31.
+     1>Проект "D:\Projects\ParallelSorting\cudabucket\cudabucket.vcxproj" в узле 2 (целевые объекты Rebuild).
+     1>CudaClean:
+         cmd.exe /C "X:\Temp\tmp8a00aa50b4e9422ebbcca5b57db969a1.cmd"
+         "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\nvcc.exe" -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include"  -G   --keep-dir Debug -maxrregcount=0  --machine 32 --compile   -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_LIB -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o Debug\bucket.cu.obj "D:\Projects\ParallelSorting\cudabucket\bucket.cu" -clean
+         
+         D:\Projects\ParallelSorting\cudabucket>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\nvcc.exe" -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include"  -G   --keep-dir Debug -maxrregcount=0  --machine 32 --compile   -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_LIB -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o Debug\bucket.cu.obj "D:\Projects\ParallelSorting\cudabucket\bucket.cu" -clean 
+       AddCudaCompileDeps:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\cl.exe /E /nologo /showIncludes /TP /D__CUDACC__ /DWIN32 /D_DEBUG /D_CONSOLE /D_LIB /D_UNICODE /DUNICODE /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" /I. /FIcuda_runtime.h /c D:\Projects\ParallelSorting\cudabucket\bucket.cu 
+       CudaBuild:
+         Compiling CUDA source file bucket.cu...
+         cmd.exe /C "X:\Temp\tmpf9677325d36545e989c4806731684410.cmd"
+         "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\nvcc.exe" -gencode=arch=compute_10,code=\"sm_10,compute_10\" --use-local-env --cl-version 2012 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include"  -G   --keep-dir Debug -maxrregcount=0  --machine 32 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_LIB -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o Debug\bucket.cu.obj "D:\Projects\ParallelSorting\cudabucket\bucket.cu"
+         
+         D:\Projects\ParallelSorting\cudabucket>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\nvcc.exe" -gencode=arch=compute_10,code=\"sm_10,compute_10\" --use-local-env --cl-version 2012 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include"  -G   --keep-dir Debug -maxrregcount=0  --machine 32 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_LIB -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o Debug\bucket.cu.obj "D:\Projects\ParallelSorting\cudabucket\bucket.cu" 
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\Projects\ParallelSorting\Debug\cudabucket.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\lib\Win32" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\Projects\ParallelSorting\Debug\cudabucket.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\Projects\ParallelSorting\Debug\cudabucket.lib" /MACHINE:X86 Debug\bucket.cu.obj
+     1>bucket.cu.obj : error LNK2019: ссылка на неразрешенный внешний символ _cudaGetDeviceCount@4 в функции _main
+     1>bucket.cu.obj : error LNK2019: ссылка на неразрешенный внешний символ _cudaFree@4 в функции "void __cdecl host_bucket_sort<long>(long *,int,int)" (??$host_bucket_sort@J@@YAXPAJHH@Z)
+     1>bucket.cu.obj : error LNK2019: ссылка на неразрешенный внешний символ _cudaMalloc@8 в функции "void __cdecl host_bucket_sort<long>(long *,int,int)" (??$host_bucket_sort@J@@YAXPAJHH@Z)
+     1>bucket.cu.obj : error LNK2019: ссылка на неразрешенный внешний символ _cudaDeviceReset@0 в функции _main
+     1>bucket.cu.obj : error LNK2019: ссылка на неразрешенный внешний символ _cudaGetDeviceProperties@8 в функции _main
+     1>bucket.cu.obj : error LNK2019: ссылка на неразрешенный внешний символ _cudaConfigureCall@32 в функции "void __cdecl host_bucket_sort<long>(long *,int,int)" (??$host_bucket_sort@J@@YAXPAJHH@Z)
+     1>bucket.cu.obj : error LNK2019: ссылка на неразрешенный внешний символ _cudaSetupArgument@12 в функции "void __cdecl __device_stub__Z26global_bucket_worker_countIlEvPT_S1_PiS2_iiii(long *,long *,int *,int *,int,int,int,int)" (?__device_stub__Z26global_bucket_worker_countIlEvPT_S1_PiS2_iiii@@YAXPAJ0PAH1HHHH@Z)
+     1>bucket.cu.obj : error LNK2019: ссылка на неразрешенный внешний символ _cudaLaunch@4 в функции "enum cudaError __cdecl _GLOBAL__N__41_tmpxft_00002594_00000000_5_bucket_cpp1_ii_title::cudaLaunch<char>(char *)" (??$cudaLaunch@D@_GLOBAL__N__41_tmpxft_00002594_00000000_5_bucket_cpp1_ii_title@@YA?AW4cudaError@@PAD@Z)
+     1>bucket.cu.obj : error LNK2019: ссылка на неразрешенный внешний символ _cudaMemcpy@16 в функции "void __cdecl host_bucket_sort<long>(long *,int,int)" (??$host_bucket_sort@J@@YAXPAJHH@Z)
+     1>bucket.cu.obj : error LNK2019: ссылка на неразрешенный внешний символ ___cudaRegisterFatBinary@4 в функции "void __cdecl __nv_cudaEntityRegisterCallback(void * *)" (?__nv_cudaEntityRegisterCallback@@YAXPAPAX@Z)
+     1>bucket.cu.obj : error LNK2019: ссылка на неразрешенный внешний символ ___cudaUnregisterFatBinary@4 в функции "void __cdecl __cudaUnregisterBinaryUtil(void)" (?__cudaUnregisterBinaryUtil@@YAXXZ)
+     1>bucket.cu.obj : error LNK2019: ссылка на неразрешенный внешний символ ___cudaRegisterFunction@40 в функции "void __cdecl __nv_cudaEntityRegisterCallback(void * *)" (?__nv_cudaEntityRegisterCallback@@YAXPAPAX@Z)
+     1>D:\Projects\ParallelSorting\Debug\cudabucket.exe : fatal error LNK1120: неразрешенных внешних элементов: 12
+     1>Построение проекта "D:\Projects\ParallelSorting\cudabucket\cudabucket.vcxproj" завершено (целевые объекты Rebuild) с ошибкой.
+
+Сбой построения.
+
+Затраченное время: 00:00:13.50

@@ -1,0 +1,520 @@
+Title :	bitonic sort
+Description :	Битоническая сортировка (bitonic sort)
+Number of processes :	10
+Array size :	1000
+Input file name :	X:\Temp\1477786a-c916-43ba-bc94-dea96dee5f37.txt
+Output file name :	X:\Temp\26d66748-b0d0-47e0-8f65-d8e19b1ed805.txt
+Check :	ok
+Title :	odd-even sort
+Description :	Сортировка четно-нечетными перестановками (odd-even sort)
+Number of processes :	10
+Array size :	1000
+Input file name :	X:\Temp\1477786a-c916-43ba-bc94-dea96dee5f37.txt
+Output file name :	X:\Temp\26d66748-b0d0-47e0-8f65-d8e19b1ed805.txt
+Array size :	1000
+Check :	ok
+Title :	bucket sort
+Description :	Блочная сортировка (bucket sort)
+Number of processes :	10
+Array size :	1000
+Indexator :	27 5
+Number of buckets per process :	4
+Input file name :	X:\Temp\1477786a-c916-43ba-bc94-dea96dee5f37.txt
+Output file name :	X:\Temp\26d66748-b0d0-47e0-8f65-d8e19b1ed805.txt
+Array size :	1000
+Check :	ok
+bitonic sort
+Running on GPU 0 (GeForce GTX 650)
+Title :	bitonic sort
+Description :	Битоническая сортировка (bitonic sort)
+Array size :	1000
+Input file name :	X:\Temp\1477786a-c916-43ba-bc94-dea96dee5f37.txt
+Output file name :	X:\Temp\26d66748-b0d0-47e0-8f65-d8e19b1ed805.txt
+Array size :	1000
+Check :	ok
+odd-even sort
+Running on GPU 0 (GeForce GTX 650)
+Title :	odd-even sort
+Description :	Сортировка четно-нечетными перестановками (odd-even sort)
+Array size :	1000
+Input file name :	X:\Temp\1477786a-c916-43ba-bc94-dea96dee5f37.txt
+Output file name :	X:\Temp\26d66748-b0d0-47e0-8f65-d8e19b1ed805.txt
+Array size :	1000
+Check :	ok
+bucket sort
+Running on GPU 0 (GeForce GTX 650)
+Title :	bucket sort
+Description :	Блочная сортировка (bucket sort)
+Array size :	1000
+Input file name :	X:\Temp\1477786a-c916-43ba-bc94-dea96dee5f37.txt
+Output file name :	X:\Temp\26d66748-b0d0-47e0-8f65-d8e19b1ed805.txt
+Array size :	1000
+Check :	ok
+Title :	bitonic sort
+Description :	Битоническая сортировка (bitonic sort)
+Number of processes :	10
+Array size :	2000
+Input file name :	X:\Temp\e584a068-f102-4fc9-aefd-aa0e95aa2bb2.txt
+Output file name :	X:\Temp\2b3fb3f8-c6f3-4f0d-806c-fd8985f04b8f.txt
+Check :	ok
+Title :	odd-even sort
+Description :	Сортировка четно-нечетными перестановками (odd-even sort)
+Number of processes :	10
+Array size :	2000
+Input file name :	X:\Temp\e584a068-f102-4fc9-aefd-aa0e95aa2bb2.txt
+Output file name :	X:\Temp\2b3fb3f8-c6f3-4f0d-806c-fd8985f04b8f.txt
+Array size :	2000
+Check :	ok
+Title :	bucket sort
+Description :	Блочная сортировка (bucket sort)
+Number of processes :	10
+Array size :	2000
+Indexator :	26 6
+Number of buckets per process :	7
+Input file name :	X:\Temp\e584a068-f102-4fc9-aefd-aa0e95aa2bb2.txt
+Output file name :	X:\Temp\2b3fb3f8-c6f3-4f0d-806c-fd8985f04b8f.txt
+Array size :	2000
+Check :	ok
+bitonic sort
+Running on GPU 0 (GeForce GTX 650)
+Title :	bitonic sort
+Description :	Битоническая сортировка (bitonic sort)
+Array size :	2000
+Input file name :	X:\Temp\e584a068-f102-4fc9-aefd-aa0e95aa2bb2.txt
+Output file name :	X:\Temp\2b3fb3f8-c6f3-4f0d-806c-fd8985f04b8f.txt
+Array size :	2000
+Check :	ok
+odd-even sort
+Running on GPU 0 (GeForce GTX 650)
+Title :	odd-even sort
+Description :	Сортировка четно-нечетными перестановками (odd-even sort)
+Array size :	2000
+Input file name :	X:\Temp\e584a068-f102-4fc9-aefd-aa0e95aa2bb2.txt
+Output file name :	X:\Temp\2b3fb3f8-c6f3-4f0d-806c-fd8985f04b8f.txt
+Array size :	2000
+Check :	ok
+bucket sort
+Running on GPU 0 (GeForce GTX 650)
+Title :	bucket sort
+Description :	Блочная сортировка (bucket sort)
+Array size :	2000
+Input file name :	X:\Temp\e584a068-f102-4fc9-aefd-aa0e95aa2bb2.txt
+Output file name :	X:\Temp\2b3fb3f8-c6f3-4f0d-806c-fd8985f04b8f.txt
+Array size :	2000
+Check :	ok
+Title :	bitonic sort
+Description :	Битоническая сортировка (bitonic sort)
+Number of processes :	10
+Array size :	3000
+Input file name :	X:\Temp\b6eeffde-d243-4e80-93e9-384cd6da486c.txt
+Output file name :	X:\Temp\646e40fe-7550-45d8-a4f6-d1b0fd572000.txt
+Check :	ok
+Title :	odd-even sort
+Description :	Сортировка четно-нечетными перестановками (odd-even sort)
+Number of processes :	10
+Array size :	3000
+Input file name :	X:\Temp\b6eeffde-d243-4e80-93e9-384cd6da486c.txt
+Output file name :	X:\Temp\646e40fe-7550-45d8-a4f6-d1b0fd572000.txt
+Array size :	3000
+Check :	ok
+Title :	bucket sort
+Description :	Блочная сортировка (bucket sort)
+Number of processes :	10
+Array size :	3000
+Indexator :	26 6
+Number of buckets per process :	7
+Input file name :	X:\Temp\b6eeffde-d243-4e80-93e9-384cd6da486c.txt
+Output file name :	X:\Temp\646e40fe-7550-45d8-a4f6-d1b0fd572000.txt
+Array size :	3000
+Check :	ok
+bitonic sort
+Running on GPU 0 (GeForce GTX 650)
+Title :	bitonic sort
+Description :	Битоническая сортировка (bitonic sort)
+Array size :	3000
+Input file name :	X:\Temp\b6eeffde-d243-4e80-93e9-384cd6da486c.txt
+Output file name :	X:\Temp\646e40fe-7550-45d8-a4f6-d1b0fd572000.txt
+Array size :	3000
+Check :	ok
+odd-even sort
+Running on GPU 0 (GeForce GTX 650)
+Title :	odd-even sort
+Description :	Сортировка четно-нечетными перестановками (odd-even sort)
+Array size :	3000
+Input file name :	X:\Temp\b6eeffde-d243-4e80-93e9-384cd6da486c.txt
+Output file name :	X:\Temp\646e40fe-7550-45d8-a4f6-d1b0fd572000.txt
+Array size :	3000
+Check :	ok
+bucket sort
+Running on GPU 0 (GeForce GTX 650)
+Title :	bucket sort
+Description :	Блочная сортировка (bucket sort)
+Array size :	3000
+Input file name :	X:\Temp\b6eeffde-d243-4e80-93e9-384cd6da486c.txt
+Output file name :	X:\Temp\646e40fe-7550-45d8-a4f6-d1b0fd572000.txt
+Array size :	3000
+Check :	ok
+Title :	bitonic sort
+Description :	Битоническая сортировка (bitonic sort)
+Number of processes :	10
+Array size :	4000
+Input file name :	X:\Temp\ce9326e4-f286-4b6b-a728-2815b9726ece.txt
+Output file name :	X:\Temp\d7ac185a-77b5-469f-97eb-b5c699e6ea86.txt
+Check :	ok
+Title :	odd-even sort
+Description :	Сортировка четно-нечетными перестановками (odd-even sort)
+Number of processes :	10
+Array size :	4000
+Input file name :	X:\Temp\ce9326e4-f286-4b6b-a728-2815b9726ece.txt
+Output file name :	X:\Temp\d7ac185a-77b5-469f-97eb-b5c699e6ea86.txt
+Array size :	4000
+Check :	ok
+Title :	bucket sort
+Description :	Блочная сортировка (bucket sort)
+Number of processes :	10
+Array size :	4000
+Indexator :	26 6
+Number of buckets per process :	7
+Input file name :	X:\Temp\ce9326e4-f286-4b6b-a728-2815b9726ece.txt
+Output file name :	X:\Temp\d7ac185a-77b5-469f-97eb-b5c699e6ea86.txt
+Array size :	4000
+Check :	ok
+bitonic sort
+Running on GPU 0 (GeForce GTX 650)
+Title :	bitonic sort
+Description :	Битоническая сортировка (bitonic sort)
+Array size :	4000
+Input file name :	X:\Temp\ce9326e4-f286-4b6b-a728-2815b9726ece.txt
+Output file name :	X:\Temp\d7ac185a-77b5-469f-97eb-b5c699e6ea86.txt
+Array size :	4000
+Check :	ok
+odd-even sort
+Running on GPU 0 (GeForce GTX 650)
+Title :	odd-even sort
+Description :	Сортировка четно-нечетными перестановками (odd-even sort)
+Array size :	4000
+Input file name :	X:\Temp\ce9326e4-f286-4b6b-a728-2815b9726ece.txt
+Output file name :	X:\Temp\d7ac185a-77b5-469f-97eb-b5c699e6ea86.txt
+Array size :	4000
+Check :	ok
+bucket sort
+Running on GPU 0 (GeForce GTX 650)
+Title :	bucket sort
+Description :	Блочная сортировка (bucket sort)
+Array size :	4000
+Input file name :	X:\Temp\ce9326e4-f286-4b6b-a728-2815b9726ece.txt
+Output file name :	X:\Temp\d7ac185a-77b5-469f-97eb-b5c699e6ea86.txt
+Array size :	4000
+Check :	ok
+Title :	bitonic sort
+Description :	Битоническая сортировка (bitonic sort)
+Number of processes :	10
+Array size :	5000
+Input file name :	X:\Temp\587fd48e-d5d9-499f-9ac0-81159cc17f05.txt
+Output file name :	X:\Temp\c4da08ae-d36e-4422-8390-e73b292fe554.txt
+Check :	ok
+Title :	odd-even sort
+Description :	Сортировка четно-нечетными перестановками (odd-even sort)
+Number of processes :	10
+Array size :	5000
+Input file name :	X:\Temp\587fd48e-d5d9-499f-9ac0-81159cc17f05.txt
+Output file name :	X:\Temp\c4da08ae-d36e-4422-8390-e73b292fe554.txt
+Array size :	5000
+Check :	ok
+Title :	bucket sort
+Description :	Блочная сортировка (bucket sort)
+Number of processes :	10
+Array size :	5000
+Indexator :	25 7
+Number of buckets per process :	13
+Input file name :	X:\Temp\587fd48e-d5d9-499f-9ac0-81159cc17f05.txt
+Output file name :	X:\Temp\c4da08ae-d36e-4422-8390-e73b292fe554.txt
+Array size :	5000
+Check :	ok
+bitonic sort
+Running on GPU 0 (GeForce GTX 650)
+Title :	bitonic sort
+Description :	Битоническая сортировка (bitonic sort)
+Array size :	5000
+Input file name :	X:\Temp\587fd48e-d5d9-499f-9ac0-81159cc17f05.txt
+Output file name :	X:\Temp\c4da08ae-d36e-4422-8390-e73b292fe554.txt
+Array size :	5000
+Check :	ok
+odd-even sort
+Running on GPU 0 (GeForce GTX 650)
+Title :	odd-even sort
+Description :	Сортировка четно-нечетными перестановками (odd-even sort)
+Array size :	5000
+Input file name :	X:\Temp\587fd48e-d5d9-499f-9ac0-81159cc17f05.txt
+Output file name :	X:\Temp\c4da08ae-d36e-4422-8390-e73b292fe554.txt
+Array size :	5000
+Check :	ok
+bucket sort
+Running on GPU 0 (GeForce GTX 650)
+Title :	bucket sort
+Description :	Блочная сортировка (bucket sort)
+Array size :	5000
+Input file name :	X:\Temp\587fd48e-d5d9-499f-9ac0-81159cc17f05.txt
+Output file name :	X:\Temp\c4da08ae-d36e-4422-8390-e73b292fe554.txt
+Array size :	5000
+Check :	ok
+Title :	bitonic sort
+Description :	Битоническая сортировка (bitonic sort)
+Number of processes :	10
+Array size :	6000
+Input file name :	X:\Temp\1bab883b-041f-4057-a467-fab876fa6711.txt
+Output file name :	X:\Temp\dd65629c-2acc-456f-a931-7ee489f56dda.txt
+Check :	ok
+Title :	odd-even sort
+Description :	Сортировка четно-нечетными перестановками (odd-even sort)
+Number of processes :	10
+Array size :	6000
+Input file name :	X:\Temp\1bab883b-041f-4057-a467-fab876fa6711.txt
+Output file name :	X:\Temp\dd65629c-2acc-456f-a931-7ee489f56dda.txt
+Array size :	6000
+Check :	ok
+Title :	bucket sort
+Description :	Блочная сортировка (bucket sort)
+Number of processes :	10
+Array size :	6000
+Indexator :	25 7
+Number of buckets per process :	13
+Input file name :	X:\Temp\1bab883b-041f-4057-a467-fab876fa6711.txt
+Output file name :	X:\Temp\dd65629c-2acc-456f-a931-7ee489f56dda.txt
+Array size :	6000
+Check :	ok
+bitonic sort
+Running on GPU 0 (GeForce GTX 650)
+Title :	bitonic sort
+Description :	Битоническая сортировка (bitonic sort)
+Array size :	6000
+Input file name :	X:\Temp\1bab883b-041f-4057-a467-fab876fa6711.txt
+Output file name :	X:\Temp\dd65629c-2acc-456f-a931-7ee489f56dda.txt
+Array size :	6000
+Check :	ok
+odd-even sort
+Running on GPU 0 (GeForce GTX 650)
+Title :	odd-even sort
+Description :	Сортировка четно-нечетными перестановками (odd-even sort)
+Array size :	6000
+Input file name :	X:\Temp\1bab883b-041f-4057-a467-fab876fa6711.txt
+Output file name :	X:\Temp\dd65629c-2acc-456f-a931-7ee489f56dda.txt
+Array size :	6000
+Check :	ok
+bucket sort
+Running on GPU 0 (GeForce GTX 650)
+Title :	bucket sort
+Description :	Блочная сортировка (bucket sort)
+Array size :	6000
+Input file name :	X:\Temp\1bab883b-041f-4057-a467-fab876fa6711.txt
+Output file name :	X:\Temp\dd65629c-2acc-456f-a931-7ee489f56dda.txt
+Array size :	6000
+Check :	ok
+Title :	bitonic sort
+Description :	Битоническая сортировка (bitonic sort)
+Number of processes :	10
+Array size :	7000
+Input file name :	X:\Temp\acfd05f1-8ef0-4fa3-a538-5bec7dbbe529.txt
+Output file name :	X:\Temp\78aab385-dd4c-4f1c-afe7-81d0493d2be6.txt
+Check :	ok
+Title :	odd-even sort
+Description :	Сортировка четно-нечетными перестановками (odd-even sort)
+Number of processes :	10
+Array size :	7000
+Input file name :	X:\Temp\acfd05f1-8ef0-4fa3-a538-5bec7dbbe529.txt
+Output file name :	X:\Temp\78aab385-dd4c-4f1c-afe7-81d0493d2be6.txt
+Array size :	7000
+Check :	ok
+Title :	bucket sort
+Description :	Блочная сортировка (bucket sort)
+Number of processes :	10
+Array size :	7000
+Indexator :	25 7
+Number of buckets per process :	13
+Input file name :	X:\Temp\acfd05f1-8ef0-4fa3-a538-5bec7dbbe529.txt
+Output file name :	X:\Temp\78aab385-dd4c-4f1c-afe7-81d0493d2be6.txt
+Array size :	7000
+Check :	ok
+bitonic sort
+Running on GPU 0 (GeForce GTX 650)
+Title :	bitonic sort
+Description :	Битоническая сортировка (bitonic sort)
+Array size :	7000
+Input file name :	X:\Temp\acfd05f1-8ef0-4fa3-a538-5bec7dbbe529.txt
+Output file name :	X:\Temp\78aab385-dd4c-4f1c-afe7-81d0493d2be6.txt
+Array size :	7000
+Check :	ok
+odd-even sort
+Running on GPU 0 (GeForce GTX 650)
+Title :	odd-even sort
+Description :	Сортировка четно-нечетными перестановками (odd-even sort)
+Array size :	7000
+Input file name :	X:\Temp\acfd05f1-8ef0-4fa3-a538-5bec7dbbe529.txt
+Output file name :	X:\Temp\78aab385-dd4c-4f1c-afe7-81d0493d2be6.txt
+Array size :	7000
+Check :	ok
+bucket sort
+Running on GPU 0 (GeForce GTX 650)
+Title :	bucket sort
+Description :	Блочная сортировка (bucket sort)
+Array size :	7000
+Input file name :	X:\Temp\acfd05f1-8ef0-4fa3-a538-5bec7dbbe529.txt
+Output file name :	X:\Temp\78aab385-dd4c-4f1c-afe7-81d0493d2be6.txt
+Array size :	7000
+Check :	ok
+Title :	bitonic sort
+Description :	Битоническая сортировка (bitonic sort)
+Number of processes :	10
+Array size :	8000
+Input file name :	X:\Temp\3426f593-754e-46da-91e2-c9d2b39858cb.txt
+Output file name :	X:\Temp\176e45f8-490b-4320-9009-44c017aca0ff.txt
+Check :	ok
+Title :	odd-even sort
+Description :	Сортировка четно-нечетными перестановками (odd-even sort)
+Number of processes :	10
+Array size :	8000
+Input file name :	X:\Temp\3426f593-754e-46da-91e2-c9d2b39858cb.txt
+Output file name :	X:\Temp\176e45f8-490b-4320-9009-44c017aca0ff.txt
+Array size :	8000
+Check :	ok
+Title :	bucket sort
+Description :	Блочная сортировка (bucket sort)
+Number of processes :	10
+Array size :	8000
+Indexator :	25 7
+Number of buckets per process :	13
+Input file name :	X:\Temp\3426f593-754e-46da-91e2-c9d2b39858cb.txt
+Output file name :	X:\Temp\176e45f8-490b-4320-9009-44c017aca0ff.txt
+Array size :	8000
+Check :	ok
+bitonic sort
+Running on GPU 0 (GeForce GTX 650)
+Title :	bitonic sort
+Description :	Битоническая сортировка (bitonic sort)
+Array size :	8000
+Input file name :	X:\Temp\3426f593-754e-46da-91e2-c9d2b39858cb.txt
+Output file name :	X:\Temp\176e45f8-490b-4320-9009-44c017aca0ff.txt
+Array size :	8000
+Check :	ok
+odd-even sort
+Running on GPU 0 (GeForce GTX 650)
+Title :	odd-even sort
+Description :	Сортировка четно-нечетными перестановками (odd-even sort)
+Array size :	8000
+Input file name :	X:\Temp\3426f593-754e-46da-91e2-c9d2b39858cb.txt
+Output file name :	X:\Temp\176e45f8-490b-4320-9009-44c017aca0ff.txt
+Array size :	8000
+Check :	ok
+bucket sort
+Running on GPU 0 (GeForce GTX 650)
+Title :	bucket sort
+Description :	Блочная сортировка (bucket sort)
+Array size :	8000
+Input file name :	X:\Temp\3426f593-754e-46da-91e2-c9d2b39858cb.txt
+Output file name :	X:\Temp\176e45f8-490b-4320-9009-44c017aca0ff.txt
+Array size :	8000
+Check :	ok
+Title :	bitonic sort
+Description :	Битоническая сортировка (bitonic sort)
+Number of processes :	10
+Array size :	9000
+Input file name :	X:\Temp\f714a628-a634-42e3-a61f-6945bb4c6205.txt
+Output file name :	X:\Temp\03c4fe9b-c51e-4dbd-810a-e91693fd58fa.txt
+Check :	ok
+Title :	odd-even sort
+Description :	Сортировка четно-нечетными перестановками (odd-even sort)
+Number of processes :	10
+Array size :	9000
+Input file name :	X:\Temp\f714a628-a634-42e3-a61f-6945bb4c6205.txt
+Output file name :	X:\Temp\03c4fe9b-c51e-4dbd-810a-e91693fd58fa.txt
+Array size :	9000
+Check :	ok
+Title :	bucket sort
+Description :	Блочная сортировка (bucket sort)
+Number of processes :	10
+Array size :	9000
+Indexator :	25 7
+Number of buckets per process :	13
+Input file name :	X:\Temp\f714a628-a634-42e3-a61f-6945bb4c6205.txt
+Output file name :	X:\Temp\03c4fe9b-c51e-4dbd-810a-e91693fd58fa.txt
+Array size :	9000
+Check :	ok
+bitonic sort
+Running on GPU 0 (GeForce GTX 650)
+Title :	bitonic sort
+Description :	Битоническая сортировка (bitonic sort)
+Array size :	9000
+Input file name :	X:\Temp\f714a628-a634-42e3-a61f-6945bb4c6205.txt
+Output file name :	X:\Temp\03c4fe9b-c51e-4dbd-810a-e91693fd58fa.txt
+Array size :	9000
+Check :	ok
+odd-even sort
+Running on GPU 0 (GeForce GTX 650)
+Title :	odd-even sort
+Description :	Сортировка четно-нечетными перестановками (odd-even sort)
+Array size :	9000
+Input file name :	X:\Temp\f714a628-a634-42e3-a61f-6945bb4c6205.txt
+Output file name :	X:\Temp\03c4fe9b-c51e-4dbd-810a-e91693fd58fa.txt
+Array size :	9000
+Check :	ok
+bucket sort
+Running on GPU 0 (GeForce GTX 650)
+Title :	bucket sort
+Description :	Блочная сортировка (bucket sort)
+Array size :	9000
+Input file name :	X:\Temp\f714a628-a634-42e3-a61f-6945bb4c6205.txt
+Output file name :	X:\Temp\03c4fe9b-c51e-4dbd-810a-e91693fd58fa.txt
+Array size :	9000
+Check :	ok
+Title :	bitonic sort
+Description :	Битоническая сортировка (bitonic sort)
+Number of processes :	10
+Array size :	10000
+Input file name :	X:\Temp\7c704643-6f40-4be0-8dd1-61b976b14f12.txt
+Output file name :	X:\Temp\2bf89772-00aa-4f66-b16c-5462aefed59d.txt
+Check :	ok
+Title :	odd-even sort
+Description :	Сортировка четно-нечетными перестановками (odd-even sort)
+Number of processes :	10
+Array size :	10000
+Input file name :	X:\Temp\7c704643-6f40-4be0-8dd1-61b976b14f12.txt
+Output file name :	X:\Temp\2bf89772-00aa-4f66-b16c-5462aefed59d.txt
+Array size :	10000
+Check :	ok
+Title :	bucket sort
+Description :	Блочная сортировка (bucket sort)
+Number of processes :	10
+Array size :	10000
+Indexator :	25 7
+Number of buckets per process :	13
+Input file name :	X:\Temp\7c704643-6f40-4be0-8dd1-61b976b14f12.txt
+Output file name :	X:\Temp\2bf89772-00aa-4f66-b16c-5462aefed59d.txt
+Array size :	10000
+Check :	ok
+bitonic sort
+Running on GPU 0 (GeForce GTX 650)
+Title :	bitonic sort
+Description :	Битоническая сортировка (bitonic sort)
+Array size :	10000
+Input file name :	X:\Temp\7c704643-6f40-4be0-8dd1-61b976b14f12.txt
+Output file name :	X:\Temp\2bf89772-00aa-4f66-b16c-5462aefed59d.txt
+Array size :	10000
+Check :	ok
+odd-even sort
+Running on GPU 0 (GeForce GTX 650)
+Title :	odd-even sort
+Description :	Сортировка четно-нечетными перестановками (odd-even sort)
+Array size :	10000
+Input file name :	X:\Temp\7c704643-6f40-4be0-8dd1-61b976b14f12.txt
+Output file name :	X:\Temp\2bf89772-00aa-4f66-b16c-5462aefed59d.txt
+Array size :	10000
+Check :	ok
+bucket sort
+Running on GPU 0 (GeForce GTX 650)
+Title :	bucket sort
+Description :	Блочная сортировка (bucket sort)
+Array size :	10000
+Input file name :	X:\Temp\7c704643-6f40-4be0-8dd1-61b976b14f12.txt
+Output file name :	X:\Temp\2bf89772-00aa-4f66-b16c-5462aefed59d.txt
+Array size :	10000
+Check :	ok

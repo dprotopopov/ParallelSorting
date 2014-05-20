@@ -1,0 +1,14 @@
+D:\Projects\ParallelSorting\ParallelSorting.Editor\bin\Debug\ParallelSorting.Editor.exe.config
+D:\Projects\ParallelSorting\ParallelSorting.Editor\bin\Debug\ParallelSorting.Editor.exe
+D:\Projects\ParallelSorting\ParallelSorting.Editor\bin\Debug\ParallelSorting.Editor.pdb
+D:\Projects\ParallelSorting\ParallelSorting.Editor\bin\Debug\MyLibrary.dll
+D:\Projects\ParallelSorting\ParallelSorting.Editor\bin\Debug\MyLibrary.pdb
+D:\Projects\ParallelSorting\ParallelSorting.Editor\obj\Debug\ParallelSorting.Editor.csprojResolveAssemblyReference.cache
+D:\Projects\ParallelSorting\ParallelSorting.Editor\obj\Debug\ParallelSorting.Editor.ChildForm.resources
+D:\Projects\ParallelSorting\ParallelSorting.Editor\obj\Debug\ParallelSorting.Editor.ExecuteDialog.resources
+D:\Projects\ParallelSorting\ParallelSorting.Editor\obj\Debug\ParallelSorting.Editor.MainForm.resources
+D:\Projects\ParallelSorting\ParallelSorting.Editor\obj\Debug\ParallelSorting.Editor.Properties.Resources.resources
+D:\Projects\ParallelSorting\ParallelSorting.Editor\obj\Debug\ParallelSorting.Editor.RandomDialog.resources
+D:\Projects\ParallelSorting\ParallelSorting.Editor\obj\Debug\ParallelSorting.Editor.csproj.GenerateResource.Cache
+D:\Projects\ParallelSorting\ParallelSorting.Editor\obj\Debug\ParallelSorting.Editor.exe
+D:\Projects\ParallelSorting\ParallelSorting.Editor\obj\Debug\ParallelSorting.Editor.pdb

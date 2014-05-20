@@ -1,0 +1,30 @@
+﻿Сборка начата 20.05.2014 17:01:22.
+     1>Проект "D:\Projects\ParallelSorting\cudabucket\cudabucket.vcxproj" в узле 2 (целевые объекты Rebuild).
+     1>CudaClean:
+         cmd.exe /C "X:\Temp\tmpb083c13aac4447fa9a2931e437bb96a9.cmd"
+         "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\nvcc.exe" -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\x86_amd64"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include"     --keep-dir x64\Release -maxrregcount=0  --machine 64 --compile      -DWIN32 -DNDEBUG -D_CONSOLE -D_LIB -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /O2 /Zi  /MD  " -o x64\Release\bucket.cu.obj "D:\Projects\ParallelSorting\cudabucket\bucket.cu" -clean
+         
+         D:\Projects\ParallelSorting\cudabucket>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\nvcc.exe" -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\x86_amd64"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include"     --keep-dir x64\Release -maxrregcount=0  --machine 64 --compile      -DWIN32 -DNDEBUG -D_CONSOLE -D_LIB -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /O2 /Zi  /MD  " -o x64\Release\bucket.cu.obj "D:\Projects\ParallelSorting\cudabucket\bucket.cu" -clean 
+       AddCudaCompileDeps:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\x86_amd64\cl.exe /E /nologo /showIncludes /TP /D__CUDACC__ /DWIN32 /DNDEBUG /D_CONSOLE /D_LIB /D_UNICODE /DUNICODE /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" /I. /FIcuda_runtime.h /c D:\Projects\ParallelSorting\cudabucket\bucket.cu 
+       CudaBuild:
+         Compiling CUDA source file bucket.cu...
+         cmd.exe /C "X:\Temp\tmp41179eb8893b414d9bf3a97b2ec2dcb2.cmd"
+         "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\nvcc.exe" -gencode=arch=compute_10,code=\"sm_10,compute_10\" --use-local-env --cl-version 2012 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\x86_amd64"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include"     --keep-dir x64\Release -maxrregcount=0  --machine 64 --compile -cudart static     -DWIN32 -DNDEBUG -D_CONSOLE -D_LIB -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /O2 /Zi  /MD  " -o x64\Release\bucket.cu.obj "D:\Projects\ParallelSorting\cudabucket\bucket.cu"
+         
+         D:\Projects\ParallelSorting\cudabucket>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\nvcc.exe" -gencode=arch=compute_10,code=\"sm_10,compute_10\" --use-local-env --cl-version 2012 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\x86_amd64"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include"     --keep-dir x64\Release -maxrregcount=0  --machine 64 --compile -cudart static     -DWIN32 -DNDEBUG -D_CONSOLE -D_LIB -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /O2 /Zi  /MD  " -o x64\Release\bucket.cu.obj "D:\Projects\ParallelSorting\cudabucket\bucket.cu" 
+     1>D:/Projects/ParallelSorting/cudabucket/bucket.cu(75): warning C4334: <<: результат 32-разрядного смещения неявно преобразуется в 64-разрядное значение (предполагалось 64-разрядное смещение?)
+                 D:/Projects/ParallelSorting/cudabucket/bucket.cu(360): см. ссылку на создание экземпляров функции шаблон при компиляции "void host_bucket_sort<long>(T *,int,int)"
+                 with
+                 [
+                     T=long
+                 ]
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"D:\Projects\ParallelSorting\Release\cudabucket.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\lib\x64" /LIBPATH:"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\lib\x64" cudart.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\Projects\ParallelSorting\Release\cudabucket.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\Projects\ParallelSorting\Release\cudabucket.lib" /MACHINE:X64 x64\Release\bucket.cu.obj
+         LINK : указан параметр /LTCG, но не требуется создание кода; удалите /LTCG из командной строки компоновки для повышения производительности компоновщика
+         cudabucket.vcxproj -> D:\Projects\ParallelSorting\Release\cudabucket.exe
+     1>Построение проекта "D:\Projects\ParallelSorting\cudabucket\cudabucket.vcxproj" завершено (целевые объекты Rebuild).
+
+Построение успешно завершено.
+
+Затраченное время: 00:00:11.57

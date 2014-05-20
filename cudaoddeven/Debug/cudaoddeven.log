@@ -1,0 +1,35 @@
+﻿Сборка начата 20.05.2014 11:24:44.
+     1>Проект "D:\Projects\ParallelSorting\cudaoddeven\cudaoddeven.vcxproj" в узле 3 (целевые объекты Rebuild).
+     1>CudaClean:
+         cmd.exe /C "X:\Temp\tmp469b46a320ff49439f9eb0c3c285c096.cmd"
+         "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\nvcc.exe" -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include"  -G   --keep-dir Debug -maxrregcount=0  --machine 32 --compile   -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_LIB -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o Debug\oddeven.cu.obj "D:\Projects\ParallelSorting\cudaoddeven\oddeven.cu" -clean
+         
+         D:\Projects\ParallelSorting\cudaoddeven>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\nvcc.exe" -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include"  -G   --keep-dir Debug -maxrregcount=0  --machine 32 --compile   -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_LIB -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o Debug\oddeven.cu.obj "D:\Projects\ParallelSorting\cudaoddeven\oddeven.cu" -clean 
+       AddCudaCompileDeps:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\cl.exe /E /nologo /showIncludes /TP /D__CUDACC__ /DWIN32 /D_DEBUG /D_CONSOLE /D_LIB /D_UNICODE /DUNICODE /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" /I. /FIcuda_runtime.h /c D:\Projects\ParallelSorting\cudaoddeven\oddeven.cu 
+       CudaBuild:
+         Compiling CUDA source file oddeven.cu...
+         cmd.exe /C "X:\Temp\tmp919f28175a0c4db9802cd8a1916ac18d.cmd"
+         "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\nvcc.exe" -gencode=arch=compute_10,code=\"sm_10,compute_10\" --use-local-env --cl-version 2012 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include"  -G   --keep-dir Debug -maxrregcount=0  --machine 32 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_LIB -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o Debug\oddeven.cu.obj "D:\Projects\ParallelSorting\cudaoddeven\oddeven.cu"
+         
+         D:\Projects\ParallelSorting\cudaoddeven>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\nvcc.exe" -gencode=arch=compute_10,code=\"sm_10,compute_10\" --use-local-env --cl-version 2012 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include"  -G   --keep-dir Debug -maxrregcount=0  --machine 32 --compile -cudart static  -g   -DWIN32 -D_DEBUG -D_CONSOLE -D_LIB -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /Od /Zi /RTC1 /MDd  " -o Debug\oddeven.cu.obj "D:\Projects\ParallelSorting\cudaoddeven\oddeven.cu" 
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\Projects\ParallelSorting\Debug\cudaoddeven.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\lib\Win32" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\Projects\ParallelSorting\Debug\cudaoddeven.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\Projects\ParallelSorting\Debug\cudaoddeven.lib" /MACHINE:X86 Debug\oddeven.cu.obj
+     1>oddeven.cu.obj : error LNK2019: ссылка на неразрешенный внешний символ _cudaGetDeviceCount@4 в функции _main
+     1>oddeven.cu.obj : error LNK2019: ссылка на неразрешенный внешний символ _cudaFree@4 в функции "void __cdecl host_oddeven_sort<long>(long *,int,int)" (??$host_oddeven_sort@J@@YAXPAJHH@Z)
+     1>oddeven.cu.obj : error LNK2019: ссылка на неразрешенный внешний символ _cudaMalloc@8 в функции "void __cdecl host_oddeven_sort<long>(long *,int,int)" (??$host_oddeven_sort@J@@YAXPAJHH@Z)
+     1>oddeven.cu.obj : error LNK2019: ссылка на неразрешенный внешний символ _cudaDeviceReset@0 в функции _main
+     1>oddeven.cu.obj : error LNK2019: ссылка на неразрешенный внешний символ _cudaGetDeviceProperties@8 в функции _main
+     1>oddeven.cu.obj : error LNK2019: ссылка на неразрешенный внешний символ _cudaConfigureCall@32 в функции "void __cdecl host_oddeven_sort<long>(long *,int,int)" (??$host_oddeven_sort@J@@YAXPAJHH@Z)
+     1>oddeven.cu.obj : error LNK2019: ссылка на неразрешенный внешний символ _cudaSetupArgument@12 в функции "void __cdecl __device_stub__Z22global_oddeven_spliterIlEvPiii(int *,int,int)" (?__device_stub__Z22global_oddeven_spliterIlEvPiii@@YAXPAHHH@Z)
+     1>oddeven.cu.obj : error LNK2019: ссылка на неразрешенный внешний символ _cudaLaunch@4 в функции "enum cudaError __cdecl _GLOBAL__N__42_tmpxft_00001a08_00000000_5_oddeven_cpp1_ii_title::cudaLaunch<char>(char *)" (??$cudaLaunch@D@_GLOBAL__N__42_tmpxft_00001a08_00000000_5_oddeven_cpp1_ii_title@@YA?AW4cudaError@@PAD@Z)
+     1>oddeven.cu.obj : error LNK2019: ссылка на неразрешенный внешний символ _cudaMemcpy@16 в функции "void __cdecl host_oddeven_sort<long>(long *,int,int)" (??$host_oddeven_sort@J@@YAXPAJHH@Z)
+     1>oddeven.cu.obj : error LNK2019: ссылка на неразрешенный внешний символ ___cudaRegisterFatBinary@4 в функции "void __cdecl __nv_cudaEntityRegisterCallback(void * *)" (?__nv_cudaEntityRegisterCallback@@YAXPAPAX@Z)
+     1>oddeven.cu.obj : error LNK2019: ссылка на неразрешенный внешний символ ___cudaUnregisterFatBinary@4 в функции "void __cdecl __cudaUnregisterBinaryUtil(void)" (?__cudaUnregisterBinaryUtil@@YAXXZ)
+     1>oddeven.cu.obj : error LNK2019: ссылка на неразрешенный внешний символ ___cudaRegisterFunction@40 в функции "void __cdecl __nv_cudaEntityRegisterCallback(void * *)" (?__nv_cudaEntityRegisterCallback@@YAXPAPAX@Z)
+     1>D:\Projects\ParallelSorting\Debug\cudaoddeven.exe : fatal error LNK1120: неразрешенных внешних элементов: 12
+     1>Построение проекта "D:\Projects\ParallelSorting\cudaoddeven\cudaoddeven.vcxproj" завершено (целевые объекты Rebuild) с ошибкой.
+
+Сбой построения.
+
+Затраченное время: 00:00:08.77

@@ -1,4 +1,6 @@
-﻿char *title = "bitonic sort";
+﻿#define _CRT_SECURE_NO_WARNINGS
+
+char *title = "bitonic sort";
 char *description = "Битоническая сортировка (bitonic sort)";
 /*
 В основе этой сортировки лежит операция Bn(полуочиститель, half - cleaner) над массивом, параллельно
@@ -55,30 +57,34 @@ char *description = "Битоническая сортировка (bitonic sort
 // a positive integer value if the first argument is greater than the second and zero if the arguments are equal.
 int asc_order(const void *e1, const void *e2) 
 { 
-	return (*((int *)e1) - *((int *)e2)); 
+	if(*((long *)e1) < *((long *)e2)) return -1; 
+	if(*((long *)e1) > *((long *)e2)) return 1; 
+	return 0;
 }
 int desc_order(const void *e1, const void *e2) 
 { 
-	return (*((int *)e2) - *((int *)e1)); 
+	if(*((long *)e1) < *((long *)e2)) return 1; 
+	if(*((long *)e1) > *((long *)e2)) return -1; 
+	return 0;
 }
 
-/* Перестановка двух элкментов в массиве */
+/* Перестановка двух элементов в массиве */
 void exchange(const void *e1, const void *e2) 
 { 
-	int x = *((int *)e1) ; *((int *)e1) = *((int *)e2); *((int *)e2) = x;
+	long x = *((long *)e1) ; *((long *)e1) = *((long *)e2); *((long *)e2) = x;
 }
 /* Копирование элементов */
 void copy(const void *e1, const void *e2, int count) 
 { 
 	int i;
 	for(i = 0 ; i < count ; i++) {
-		((int *)e1)[i] = ((int *)e2)[i];
+		((long *)e1)[i] = ((long *)e2)[i];
 	}
 }
 
 /* Bn(полуочиститель, half - cleaner) над массивом, параллельно
 упорядочивающая элементы пар xi и xi + half */
-void Bn (int *elements, int k, int direction) {
+void Bn (long *elements, int k, int direction) {
 	int i;
 	for(i = 0; i<(1<<k) ; i++) {
 		if (direction*asc_order(&elements[i],&elements[i+(1<<k)]) > 0) {
@@ -88,7 +94,7 @@ void Bn (int *elements, int k, int direction) {
 }
 /* последовательное применение полуочистителей Bn, Bn / 2, …, B2 сортирует произвольную
 битоническую последовательность.Эту операцию называют битоническим слиянием и обозначают Mn */
-void Mn(int *elements, int k, int direction,int myrank,int nrank,int i) {
+void Mn(long *elements, int k, int direction,int myrank,int nrank,int i) {
 	MPI_Status status; 
 	Bn(elements, k, direction);
 	int child = myrank+(1<<i);
@@ -99,14 +105,14 @@ void Mn(int *elements, int k, int direction,int myrank,int nrank,int i) {
 		/* Отдаём половину массива на обработку этому процессу  */
 		MPI_Send(&k, 1, MPI_INT, child, DATA_TAG, MPI_COMM_WORLD); 
 		MPI_Send(&direction, 1, MPI_INT, child, DATA_TAG, MPI_COMM_WORLD);
-		MPI_Send(&elements[1<<k], 1<<k, MPI_INT, child, DATA_TAG, MPI_COMM_WORLD); 
+		MPI_Send(&elements[1<<k], 1<<k, MPI_LONG, child, DATA_TAG, MPI_COMM_WORLD); 
 		MPI_Send(&i, 1, MPI_INT, child, DATA_TAG, MPI_COMM_WORLD); 
 
 		/* Сами продолжим обработку */
 		Mn(elements,k-1,direction,myrank,nrank,i+1);
 
 		/* Получим обработанные элементы обратно */
-		MPI_Recv(&elements[1<<k], 1<<k, MPI_INT, child, DATA_TAG, MPI_COMM_WORLD, &status);
+		MPI_Recv(&elements[1<<k], 1<<k, MPI_LONG, child, DATA_TAG, MPI_COMM_WORLD, &status);
 
 	} else if (k>0) {
 		/* Обрабатываем всё сами */
@@ -120,12 +126,13 @@ int main(int argc, char *argv[])
 	int n;         /* Размер сортируемого массива */ 
 	int nrank;      /* Общее количество процессов */ 
 	int myrank;    /* Номер текущего процесса */ 
-	int *elements[2];   /* Массив элементов, хранимые локально */ 
+	long *elements[2];   /* Массив элементов, хранимые локально */ 
 	int *size;   /* Вспомогательный массив */ 
 	int direction; /* Порядок сортировки 1 - по возрастанию, -1 по убыванию */
 	int i, j, k; 
-	int start, end;
-	MPI_Status status; 
+	MPI_Status status;
+	char *inputFileName;
+	char *outputFileName;
 
 	/* Иницилизация MPI */ 
 	MPI_Init(&argc, &argv); 
@@ -133,7 +140,7 @@ int main(int argc, char *argv[])
 	MPI_Comm_rank(MPI_COMM_WORLD, &myrank); 
 
 	if (myrank == 0 && argc < 2){
-		printf("Usage :\t%s <arraysize>\n", argv[0]); fflush(stdout);
+		printf("Usage :\t%s <inputfile> <outputfile>\n", argv[0]); fflush(stdout);
 	}
 
 	if (argc < 2){
@@ -141,11 +148,25 @@ int main(int argc, char *argv[])
 		exit(-1);
 	}
 
-	n = atoi(argv[1]);
+	// Получаем параметры - имена файлов
+	inputFileName = argv[1];
+	outputFileName = argv[2];
+
+	// Подсчитываем количество элементов в файле
+	if (myrank == 0){
+		FILE *fl = fopen(inputFileName, "r");
+		n = 0;
+		long v;
+		while (fscanf(fl,"%ld", &v)==1) n++;
+		fclose(fl);
+	}
+	MPI_Bcast(&n, 1, MPI_INT, 0, MPI_COMM_WORLD);
+
+	// Устанавливаем сортировку по-возрастанию
 	direction = 1;
 
-	elements[0]  = (int *)malloc(n*sizeof(int)); 
-	elements[1]  = (int *)malloc(n*sizeof(int)); 
+	elements[0]  = (long *)malloc(n*sizeof(long)); 
+	elements[1]  = (long *)malloc(n*sizeof(long)); 
 	size  = (int *)malloc(8*sizeof(int)*sizeof(int)); 
 
 	if (myrank == 0) {
@@ -154,12 +175,16 @@ int main(int argc, char *argv[])
 		printf("Description :\t%s\n", description);
 		printf("Number of processes :\t%d\n", nrank);
 		printf("Array size :\t%d\n", n);
+		printf("Input file name :\t%s\n", inputFileName);
+		printf("Output file name :\t%s\n", outputFileName);
 
-		/* Заполняем массив псевдо-случайными числами */ 
-		/* Операция выполняетя только на ведущем процессе */ 
-		for (i=0; i<n; i++) {
-			elements[0][i] = rand(); 
+		/* Заполняем массив числами */ 
+		/* Операция выполняется только на ведущем процессе */ 
+		FILE *fl = fopen(inputFileName, "r");
+		for (i = 0; i<n; i++) {
+			fscanf(fl,"%ld",&elements[0][i]); 
 		}
+		fclose(fl);
 
 		// Число n представимо в виде суммы степеней двойки,
 		// Поэтому, разбиваем исходные данные на подмассивы с длинами равными слагаемым этой суммы
@@ -220,11 +245,11 @@ int main(int argc, char *argv[])
 			} else {
 				int parent = status.MPI_SOURCE ;
 				MPI_Recv(&direction, 1, MPI_INT, parent, DATA_TAG, MPI_COMM_WORLD, &status); 
-				MPI_Recv(elements[0], 1<<k, MPI_INT, parent, DATA_TAG, MPI_COMM_WORLD, &status); 
+				MPI_Recv(elements[0], 1<<k, MPI_LONG, parent, DATA_TAG, MPI_COMM_WORLD, &status); 
 				MPI_Recv(&i, 1, MPI_INT, parent, DATA_TAG, MPI_COMM_WORLD, &status); 
 				//printf("Process %d has recieved a task from process %d for array of %d items.\n", myrank, parent, 1<<k);
 				Mn(elements[0], k-1, direction, myrank, nrank,i);
-				MPI_Send(elements[0], 1<<k, MPI_INT, parent, DATA_TAG, MPI_COMM_WORLD); 
+				MPI_Send(elements[0], 1<<k, MPI_LONG, parent, DATA_TAG, MPI_COMM_WORLD); 
 			}
 		}
 	}
@@ -233,14 +258,18 @@ int main(int argc, char *argv[])
 	/* Проверяем и выводим результаты */
 	if (myrank == 0) {
 		int check = 1;
-		for(i=1; i<n && check ;i++) {
+		for(i=1; i<n && check==1 ;i++) {
 			check = (direction*asc_order(&elements[1][i-1],&elements[1][i]) <= 0)?1:0;
 		}
 
 		printf("Check :\t%s\n", (check?"ok":"fail"));
 
-		for(i=0; i<n && i<20;i++) {	printf("%d,",elements[1][i]); } printf("...\n");
-	} 
+		FILE *fl = fopen(outputFileName, "w");
+		for (i = 0; i<n; i++) {
+			fprintf(fl, "%ld\n", elements[1][i]);
+		}
+		fclose(fl);
+	}
 
 	/* Освобождаем ранее выделенные ресурсы */
 	free(size); 
