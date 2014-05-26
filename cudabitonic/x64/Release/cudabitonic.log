@@ -1,24 +1,12 @@
-﻿Сборка начата 20.05.2014 17:01:21.
-     1>Проект "D:\Projects\ParallelSorting\cudabitonic\cudabitonic.vcxproj" в узле 3 (целевые объекты Rebuild).
+﻿Сборка начата 26.05.2014 17:06:40.
+     1>Проект "D:\Projects\ParallelSorting\cudabitonic\cudabitonic.vcxproj" в узле 2 (целевые объекты Clean).
      1>CudaClean:
-         cmd.exe /C "X:\Temp\tmp6801c1a1a87b415fb0d025d959398ac0.cmd"
+         cmd.exe /C "X:\Temp\tmpc8e43b66598845b0b4a78b72e13aca1b.cmd"
          "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\nvcc.exe" -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\x86_amd64"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include"     --keep-dir x64\Release -maxrregcount=0  --machine 64 --compile      -DWIN32 -DNDEBUG -D_CONSOLE -D_LIB -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /O2 /Zi  /MD  " -o x64\Release\bitonic.cu.obj "D:\Projects\ParallelSorting\cudabitonic\bitonic.cu" -clean
          
          D:\Projects\ParallelSorting\cudabitonic>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\nvcc.exe" -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\x86_amd64"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include"     --keep-dir x64\Release -maxrregcount=0  --machine 64 --compile      -DWIN32 -DNDEBUG -D_CONSOLE -D_LIB -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /O2 /Zi  /MD  " -o x64\Release\bitonic.cu.obj "D:\Projects\ParallelSorting\cudabitonic\bitonic.cu" -clean 
-       AddCudaCompileDeps:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\x86_amd64\cl.exe /E /nologo /showIncludes /TP /D__CUDACC__ /DWIN32 /DNDEBUG /D_CONSOLE /D_LIB /D_UNICODE /DUNICODE /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" /I. /FIcuda_runtime.h /c D:\Projects\ParallelSorting\cudabitonic\bitonic.cu 
-       CudaBuild:
-         Compiling CUDA source file bitonic.cu...
-         cmd.exe /C "X:\Temp\tmp8b8b10651e1a459ba651f7c49ff24444.cmd"
-         "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\nvcc.exe" -gencode=arch=compute_10,code=\"sm_10,compute_10\" --use-local-env --cl-version 2012 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\x86_amd64"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include"     --keep-dir x64\Release -maxrregcount=0  --machine 64 --compile -cudart static     -DWIN32 -DNDEBUG -D_CONSOLE -D_LIB -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /O2 /Zi  /MD  " -o x64\Release\bitonic.cu.obj "D:\Projects\ParallelSorting\cudabitonic\bitonic.cu"
-         
-         D:\Projects\ParallelSorting\cudabitonic>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\nvcc.exe" -gencode=arch=compute_10,code=\"sm_10,compute_10\" --use-local-env --cl-version 2012 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\x86_amd64"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include"     --keep-dir x64\Release -maxrregcount=0  --machine 64 --compile -cudart static     -DWIN32 -DNDEBUG -D_CONSOLE -D_LIB -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /O2 /Zi  /MD  " -o x64\Release\bitonic.cu.obj "D:\Projects\ParallelSorting\cudabitonic\bitonic.cu" 
-       Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"D:\Projects\ParallelSorting\Release\cudabitonic.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\lib\x64" /LIBPATH:"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\lib\x64" cudart.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\Projects\ParallelSorting\Release\cudabitonic.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\Projects\ParallelSorting\Release\cudabitonic.lib" /MACHINE:X64 x64\Release\bitonic.cu.obj
-         LINK : указан параметр /LTCG, но не требуется создание кода; удалите /LTCG из командной строки компоновки для повышения производительности компоновщика
-         cudabitonic.vcxproj -> D:\Projects\ParallelSorting\Release\cudabitonic.exe
-     1>Построение проекта "D:\Projects\ParallelSorting\cudabitonic\cudabitonic.vcxproj" завершено (целевые объекты Rebuild).
+     1>Построение проекта "D:\Projects\ParallelSorting\cudabitonic\cudabitonic.vcxproj" завершено (целевые объекты Clean).
 
 Построение успешно завершено.
 
-Затраченное время: 00:00:11.71
+Затраченное время: 00:00:00.64

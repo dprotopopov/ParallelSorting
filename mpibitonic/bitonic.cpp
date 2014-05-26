@@ -94,30 +94,30 @@ void Bn (long *elements, int k, int direction) {
 }
 /* последовательное применение полуочистителей Bn, Bn / 2, …, B2 сортирует произвольную
 битоническую последовательность.Эту операцию называют битоническим слиянием и обозначают Mn */
-void Mn(long *elements, int k, int direction,int myrank,int nrank,int i) {
+void Mn(long *elements, int k, int direction,int myrank,int nrank,int shift) {
 	MPI_Status status; 
 	Bn(elements, k, direction);
-	int child = myrank+(1<<i);
+	int child = myrank + shift;
 	if (k>0 && child < nrank) {
 		/* Запрашиваем первый свободный процесс */
 		/* Поскольку здесь не реализован диспечер задач, то это будет следующий по номеру */
-
+		shift <<= 1;
 		/* Отдаём половину массива на обработку этому процессу  */
 		MPI_Send(&k, 1, MPI_INT, child, DATA_TAG, MPI_COMM_WORLD); 
 		MPI_Send(&direction, 1, MPI_INT, child, DATA_TAG, MPI_COMM_WORLD);
 		MPI_Send(&elements[1<<k], 1<<k, MPI_LONG, child, DATA_TAG, MPI_COMM_WORLD); 
-		MPI_Send(&i, 1, MPI_INT, child, DATA_TAG, MPI_COMM_WORLD); 
+		MPI_Send(&shift, 1, MPI_INT, child, DATA_TAG, MPI_COMM_WORLD); 
 
 		/* Сами продолжим обработку */
-		Mn(elements,k-1,direction,myrank,nrank,i+1);
+		Mn(elements,k-1,direction,myrank,nrank,shift);
 
 		/* Получим обработанные элементы обратно */
 		MPI_Recv(&elements[1<<k], 1<<k, MPI_LONG, child, DATA_TAG, MPI_COMM_WORLD, &status);
-
+		shift >>= 1;
 	} else if (k>0) {
 		/* Обрабатываем всё сами */
-		Mn(elements,k-1,direction,myrank,nrank,i);
-		Mn(&elements[1<<k],k-1,direction,myrank,nrank,i);
+		Mn(elements,k-1,direction,myrank,nrank,shift);
+		Mn(&elements[1<<k],k-1,direction,myrank,nrank,shift);
 	}
 }
 
@@ -198,7 +198,7 @@ int main(int argc, char *argv[])
 					for(j = 0; j<(1<<(k-i-1)) ; j++) {
 						int parity = j; while(parity>1) parity = ((parity>>1) ^ (parity&1));
 						parity = 1-(parity<<1); // теперь переменная parity может иметь только 2 значения 1 и -1
-						Mn(&elements[0][offset+(j<<(i+1))],i,parity*direction,myrank,nrank,0);
+						Mn(&elements[0][offset+(j<<(i+1))],i,parity*direction,myrank,nrank,1);
 					}
 				}
 			}
@@ -243,12 +243,13 @@ int main(int argc, char *argv[])
 				// printf("Process %d terminated\n", myrank);
 				break; /* Выходим из цикла ожидания */
 			} else {
-				int parent = status.MPI_SOURCE ;
+				int parent = status.MPI_SOURCE;
+				int shift = 0;
 				MPI_Recv(&direction, 1, MPI_INT, parent, DATA_TAG, MPI_COMM_WORLD, &status); 
 				MPI_Recv(elements[0], 1<<k, MPI_LONG, parent, DATA_TAG, MPI_COMM_WORLD, &status); 
-				MPI_Recv(&i, 1, MPI_INT, parent, DATA_TAG, MPI_COMM_WORLD, &status); 
+				MPI_Recv(&shift, 1, MPI_INT, parent, DATA_TAG, MPI_COMM_WORLD, &status); 
 				//printf("Process %d has recieved a task from process %d for array of %d items.\n", myrank, parent, 1<<k);
-				Mn(elements[0], k-1, direction, myrank, nrank,i);
+				Mn(elements[0], k-1, direction, myrank, nrank, shift);
 				MPI_Send(elements[0], 1<<k, MPI_LONG, parent, DATA_TAG, MPI_COMM_WORLD); 
 			}
 		}
