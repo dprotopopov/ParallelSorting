@@ -57,7 +57,7 @@ template<class T> __device__ void device_bubble_sort(T *data, int index, int len
 template<class T> __device__ void device_bitonic_sort(T *data, int index, int len, int n, int direction);
 template<class T> __global__ void global_bitonic_worker(T * data, int n, int i, int j, int loops, int direction);
 template<class T> __global__ void global_bitonic_merger(T * data, T * data2, int * sizes, int n, int direction);
-template<class T> __host__ void host_bitonic_sort(T *data, int n, int direction);
+template<class T> __host__ void host_bitonic_sort(int gridSize, int blockSize, T *data, int n, int direction);
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 // Настроечные аттрибуты
@@ -72,7 +72,7 @@ template<class T> __host__ void host_bitonic_sort(T *data, int n, int direction)
 #define fn_parallel_sort host_bitonic_sort<long>
 
 template<class T>
-__host__ void host_bitonic_sort(T *data, int n, int direction)
+__host__ void host_bitonic_sort(int gridSize, int blockSize, T *data, int n, int direction)
 {
 	// data - массив данных
 	// n - количество элементов в исходном массиве для сортировки
@@ -108,8 +108,8 @@ __host__ void host_bitonic_sort(T *data, int n, int direction)
 					// Определим оптимальное разбиения на процессы, нити и циклы 
 					// одна нить в просессе будет будет выполнять цикл с указанным количеством итераций
 
-					int blocks = min(15, 1 << (int)k/3);
-					int threads = min(15, 1 << (int)k/3);
+					int blocks = (gridSize > 0)? gridSize : min(15, 1 << (int)k/3);
+					int threads = (blockSize > 0)? blockSize : min(15, 1 << (int)k/3);
 					int loops = ((1 << (k - 1)) + (blocks*threads - 1))/(blocks*threads);
 
 					assert((1<<(k - 1)) == 2*blocks*threads*loops);
@@ -272,6 +272,8 @@ int main(int argc, char* argv[])
 	int n;
 	char *inputFileName;
 	char *outputFileName;
+	int gridSize = 0;
+	int blockSize = 0;
 
 	std::cout << title << std::endl;
 
@@ -286,13 +288,24 @@ int main(int argc, char* argv[])
 	}
 
 	if (argc < 2){
-		printf("Usage :\t%s <inputfile> <outputfile>\n", argv[0]); fflush(stdout);
+		printf("Usage :\t%s [-g <gridSize>] [-b <blockSize>] <inputfile> <outputfile>\n", argv[0]); fflush(stdout);
 		exit(-1);
 	}
 
+	int argId = 1;
+	for(; argId < argc && argv[argId][0]=='-' ; argId++){
+		switch(argv[argId][1]){
+		case 'g':
+			gridSize = atoi(argv[++argId]);
+			break;
+		case 'b':
+			blockSize = atoi(argv[++argId]);
+			break;
+		}
+	}
 	// Получаем параметры - имена файлов
-	inputFileName = argv[1];
-	outputFileName = argv[2];
+	inputFileName = argv[argId++];
+	outputFileName = argv[argId++];
 
 	// Подсчитываем количество элементов в файле
 	{
@@ -312,6 +325,8 @@ int main(int argc, char* argv[])
 		printf("Array size :\t%d\n", n);
 		printf("Input file name :\t%s\n", inputFileName);
 		printf("Output file name :\t%s\n", outputFileName);
+		printf("Grid Size :\t%d\n", gridSize);
+		printf("Block Size :\t%d\n", blockSize);
 
 		/* Заполняем массив числами */
 		/* Операция выполняется только на ведущем процессе */
@@ -323,7 +338,7 @@ int main(int argc, char* argv[])
 	}
 
 	// Сортируем массив по возрастанию
-	fn_parallel_sort(arr, n, 1);
+	fn_parallel_sort(gridSize, blockSize, arr, n, 1);
 
 	/* Проверяем и выводим результаты */
 	{

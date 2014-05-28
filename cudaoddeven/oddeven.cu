@@ -37,7 +37,7 @@ template<class T> __device__ void device_bubble_sort(T *data, int index, int len
 template<class T> __global__ void global_oddeven_spliter(int * index,	int n, int block_pairs);
 template<class T> __global__ void global_oddeven_preworker(T * data, int * index, int block_pairs, int direction);
 template<class T> __global__ void global_oddeven_worker(T * data, int * index, int block_pairs, int parity, int direction);
-template<class T> __host__ void host_oddeven_sort(T *data, int n, int direction);
+template<class T> __host__ void host_oddeven_sort(int gridSize, int blockSize, T *data, int n, int direction);
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 // Настроечные аттрибуты
@@ -52,7 +52,7 @@ template<class T> __host__ void host_oddeven_sort(T *data, int n, int direction)
 #define fn_parallel_sort host_oddeven_sort<long>
 
 template<class T>
-__host__ void host_oddeven_sort(T *data, int n, int direction)
+__host__ void host_oddeven_sort(int gridSize, int blockSize, T *data, int n, int direction)
 {
 // data - массив данных
 // n - количество элементов в исходном массиве для сортировки
@@ -77,8 +77,8 @@ __host__ void host_oddeven_sort(T *data, int n, int direction)
 	// Определим оптимальное разбиения на процессы, нити
 	// одна нить в просессе будет сортировать массив длины 2*block_length
 
-	int blocks = min(max(1,(int)sqrt((double)block_pairs)),255);
-	int threads = (int)((block_pairs+blocks-1)/blocks);
+	int blocks = (gridSize > 0)? gridSize : min(max(1,(int)sqrt((double)block_pairs)),255);
+	int threads = (blockSize > 0)? blockSize : (int)((block_pairs+blocks-1)/blocks);
 
 	assert(n <= 2*block_length*block_pairs);
 	assert(block_pairs <= blocks*threads);
@@ -296,6 +296,8 @@ int main(int argc, char* argv[])
 	int n;
 	char *inputFileName;
 	char *outputFileName;
+	int gridSize = 0;
+	int blockSize = 0;
 
 	std::cout << title << std::endl;
 
@@ -310,13 +312,24 @@ int main(int argc, char* argv[])
 	}
 
 	if (argc < 2){
-		printf("Usage :\t%s <inputfile> <outputfile>\n", argv[0]); fflush(stdout);
+		printf("Usage :\t%s [-g <gridSize>] [-b <blockSize>] <inputfile> <outputfile>\n", argv[0]); fflush(stdout);
 		exit(-1);
 	}
 
+	int argId = 1;
+	for(; argId < argc && argv[argId][0]=='-' ; argId++){
+		switch(argv[argId][1]){
+		case 'g':
+			gridSize = atoi(argv[++argId]);
+			break;
+		case 'b':
+			blockSize = atoi(argv[++argId]);
+			break;
+		}
+	}
 	// Получаем параметры - имена файлов
-	inputFileName = argv[1];
-	outputFileName = argv[2];
+	inputFileName = argv[argId++];
+	outputFileName = argv[argId++];
 
 	// Подсчитываем количество элементов в файле
 	{
@@ -336,6 +349,8 @@ int main(int argc, char* argv[])
 		printf("Array size :\t%d\n", n);
 		printf("Input file name :\t%s\n", inputFileName);
 		printf("Output file name :\t%s\n", outputFileName);
+		printf("Grid Size :\t%d\n", gridSize);
+		printf("Block Size :\t%d\n", blockSize);
 
 		/* Заполняем массив числами */
 		/* Операция выполняется только на ведущем процессе */
@@ -347,7 +362,7 @@ int main(int argc, char* argv[])
 	}
 
 	// Сортируем массив по возрастанию
-	fn_parallel_sort(arr, n, 1);
+	fn_parallel_sort(gridSize, blockSize, arr, n, 1);
 
 	/* Проверяем и выводим результаты */
 	{

@@ -49,7 +49,8 @@ namespace ParallelSorting.Editor
             }
         }
 
-        public void Execute(int numberOfProcess, SortingAlgorithm sortingAlgorithm, ExecutionMethod executionMethod)
+        public void Execute(int numberOfProcess, int gridSize, int blockSize, SortingAlgorithm sortingAlgorithm,
+            ExecutionMethod executionMethod)
         {
             string inputFileName = Path.GetTempPath() + Guid.NewGuid() + ".txt";
             string outputFileName = Path.GetTempPath() + Guid.NewGuid() + ".txt";
@@ -58,26 +59,39 @@ namespace ParallelSorting.Editor
                 new object[]
                 {
                     SortingAlgorithm.Bitonic, ExecutionMethod.Mpi,
-                    "/C mpiexec.exe -n {0} mpibitonic {1} {2} >> sorting.log"
+                    "/C mpiexec -n {0} mpibitonic {3} {4} >> sorting.log"
                 },
                 new object[]
                 {
                     SortingAlgorithm.Oddeven, ExecutionMethod.Mpi,
-                    "/C mpiexec.exe -n {0} mpioddeven {1} {2} >> sorting.log"
+                    "/C mpiexec -n {0} mpioddeven {3} {4} >> sorting.log"
                 },
                 new object[]
-                {SortingAlgorithm.Bucket, ExecutionMethod.Mpi, "/C mpiexec.exe -n {0} mpibucket {1} {2} >> sorting.log"},
+                {
+                    SortingAlgorithm.Bucket, ExecutionMethod.Mpi, 
+                    "/C mpiexec -n {0} mpibucket {3} {4} >> sorting.log"
+                },
                 new object[]
-                {SortingAlgorithm.Bitonic, ExecutionMethod.Cuda, "/C cudabitonic.exe {1} {2} >> sorting.log"},
+                {
+                    SortingAlgorithm.Bitonic, ExecutionMethod.Cuda,
+                    "/C cudabitonic.exe -g {1} -b {2} {3} {4} >> sorting.log"
+                },
                 new object[]
-                {SortingAlgorithm.Oddeven, ExecutionMethod.Cuda, "/C cudaoddeven.exe {1} {2} >> sorting.log"},
+                {
+                    SortingAlgorithm.Oddeven, ExecutionMethod.Cuda,
+                    "/C cudaoddeven.exe -g {1} -b {2} {3} {4} >> sorting.log"
+                },
                 new object[]
-                {SortingAlgorithm.Bucket, ExecutionMethod.Cuda, "/C cudabucket.exe {1} {2} >> sorting.log"}
+                {
+                    SortingAlgorithm.Bucket, ExecutionMethod.Cuda,
+                    "/C cudabucket.exe -g {1} -b {2} {3} {4} >> sorting.log"
+                }
             }
                 where (SortingAlgorithm) item[0] == sortingAlgorithm && (ExecutionMethod) item[1] == executionMethod
                 select (string) item[2]).FirstOrDefault();
             if (string.IsNullOrEmpty(commandFormat)) throw new NotImplementedException();
-            string command = string.Format(commandFormat, numberOfProcess, inputFileName, outputFileName);
+            string command = string.Format(commandFormat, numberOfProcess, gridSize, blockSize, inputFileName,
+                outputFileName);
 
             using (var writer = new StreamWriter(File.Open(inputFileName, FileMode.Create)))
                 writer.Write(textBox1.Text);

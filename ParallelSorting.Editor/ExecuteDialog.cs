@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Windows.Forms;
 using Boolean = MyLibrary.Types.Boolean;
 
@@ -59,13 +60,28 @@ namespace ParallelSorting.Editor
 
         public int NumberOfProcess
         {
-            get { return Convert.ToInt32(numericUpDown1.Value); }
+            get { return Convert.ToInt32(numericUpDownNumberOfProcess.Value); }
+        }
+
+        public int GridSize
+        {
+            get { return Convert.ToInt32(numericUpDownGridSize.Value); }
+        }
+
+        public int BlockSize
+        {
+            get { return Convert.ToInt32(numericUpDownBlockSize.Value); }
         }
 
         public bool IsValid()
         {
             return Boolean.Xor(IsCuda, IsMpi) &&
                    Boolean.Xor(IsBitonic, IsOddeven, IsBucket);
+        }
+
+        private void ValueChanged(object sender, EventArgs e)
+        {
+            textBox1.Text = (GridSize*BlockSize).ToString(CultureInfo.InvariantCulture);
         }
     }
 }

@@ -5,8 +5,8 @@ namespace ParallelSorting.Editor
 {
     public partial class MainForm : Form
     {
-        private readonly RandomDialog _randomDialog = new RandomDialog();
         private readonly ExecuteDialog _executeDialog = new ExecuteDialog();
+        private readonly RandomDialog _randomDialog = new RandomDialog();
 
         public MainForm()
         {
@@ -57,7 +57,8 @@ namespace ParallelSorting.Editor
             if (child == null) return;
             if (_executeDialog.ShowDialog() != DialogResult.OK) return;
             if (!_executeDialog.IsValid()) return;
-            child.Execute(_executeDialog.NumberOfProcess, _executeDialog.SortingAlgorithm, _executeDialog.ExecutionMethod);
+            child.Execute(_executeDialog.NumberOfProcess, _executeDialog.GridSize, _executeDialog.BlockSize,
+                _executeDialog.SortingAlgorithm, _executeDialog.ExecutionMethod);
         }
 
         private void checkToolStripMenuItem_Click(object sender, EventArgs e)

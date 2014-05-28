@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Windows.Forms;
 
 namespace ParallelSorting.Experiment
@@ -28,6 +29,19 @@ namespace ParallelSorting.Experiment
         public int NumberMpiProcesses
         {
             get { return Convert.ToInt32(numericUpDown4.Value); }
+        }
+        public int GridSize
+        {
+            get { return Convert.ToInt32(numericUpDownGridSize.Value); }
+        }
+
+        public int BlockSize
+        {
+            get { return Convert.ToInt32(numericUpDownBlockSize.Value); }
+        }
+        private void ValueChanged(object sender, EventArgs e)
+        {
+            textBox1.Text = (GridSize * BlockSize).ToString(CultureInfo.InvariantCulture);
         }
     }
 }

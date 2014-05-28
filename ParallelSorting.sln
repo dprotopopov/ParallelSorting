@@ -3,6 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EACE0550-C4DD-4E11-A54F-17D39DE7FE9F}"
 	ProjectSection(SolutionItems) = preProject
+		README.txt = README.txt
 		Битоническая сортировка.pptx = Битоническая сортировка.pptx
 		Корзинная сортировка.pptx = Корзинная сортировка.pptx
 		Сортировка слияниями.pptx = Сортировка слияниями.pptx
@@ -208,6 +209,7 @@ Global
 		{AEF7EBD8-1B20-44A4-A298-378E57FAB655}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{AEF7EBD8-1B20-44A4-A298-378E57FAB655}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{AEF7EBD8-1B20-44A4-A298-378E57FAB655}.Release|Win32.ActiveCfg = Release|Any CPU
+		{AEF7EBD8-1B20-44A4-A298-378E57FAB655}.Release|Win32.Build.0 = Release|Any CPU
 		{AEF7EBD8-1B20-44A4-A298-378E57FAB655}.Release|x64.ActiveCfg = Release|Any CPU
 		{AEF7EBD8-1B20-44A4-A298-378E57FAB655}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection

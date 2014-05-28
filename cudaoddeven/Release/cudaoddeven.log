@@ -1,7 +1,7 @@
-﻿Сборка начата 20.05.2014 11:49:14.
-     1>Проект "D:\Projects\ParallelSorting\cudaoddeven\cudaoddeven.vcxproj" в узле 2 (целевые объекты Rebuild).
+﻿Сборка начата 28.05.2014 18:17:40.
+     1>Проект "D:\Projects\ParallelSorting\cudaoddeven\cudaoddeven.vcxproj" в узле 3 (целевые объекты Rebuild).
      1>CudaClean:
-         cmd.exe /C "X:\Temp\tmpcf0998cad9db4227ba12eac94746850d.cmd"
+         cmd.exe /C "X:\Temp\tmp773389e34d0d492c910511a4bc7609f0.cmd"
          "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\nvcc.exe" -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include"     --keep-dir Release -maxrregcount=0  --machine 32 --compile      -DWIN32 -DNDEBUG -D_CONSOLE -D_LIB -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /O2 /Zi  /MD  " -o Release\oddeven.cu.obj "D:\Projects\ParallelSorting\cudaoddeven\oddeven.cu" -clean
          
          D:\Projects\ParallelSorting\cudaoddeven>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\nvcc.exe" -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include"     --keep-dir Release -maxrregcount=0  --machine 32 --compile      -DWIN32 -DNDEBUG -D_CONSOLE -D_LIB -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /O2 /Zi  /MD  " -o Release\oddeven.cu.obj "D:\Projects\ParallelSorting\cudaoddeven\oddeven.cu" -clean 
@@ -9,7 +9,7 @@
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\cl.exe /E /nologo /showIncludes /TP /D__CUDACC__ /DWIN32 /DNDEBUG /D_CONSOLE /D_LIB /D_UNICODE /DUNICODE /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" /I. /FIcuda_runtime.h /c D:\Projects\ParallelSorting\cudaoddeven\oddeven.cu 
        CudaBuild:
          Compiling CUDA source file oddeven.cu...
-         cmd.exe /C "X:\Temp\tmp24b24cfd21774ea09adc6756cc797088.cmd"
+         cmd.exe /C "X:\Temp\tmp9ca1ebb8bea146909e6f77c9ee5a1b60.cmd"
          "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\nvcc.exe" -gencode=arch=compute_10,code=\"sm_10,compute_10\" --use-local-env --cl-version 2012 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include"     --keep-dir Release -maxrregcount=0  --machine 32 --compile -cudart static     -DWIN32 -DNDEBUG -D_CONSOLE -D_LIB -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /O2 /Zi  /MD  " -o Release\oddeven.cu.obj "D:\Projects\ParallelSorting\cudaoddeven\oddeven.cu"
          
          D:\Projects\ParallelSorting\cudaoddeven>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\bin\nvcc.exe" -gencode=arch=compute_10,code=\"sm_10,compute_10\" --use-local-env --cl-version 2012 -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin"  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v5.5\include"     --keep-dir Release -maxrregcount=0  --machine 32 --compile -cudart static     -DWIN32 -DNDEBUG -D_CONSOLE -D_LIB -D_UNICODE -DUNICODE -Xcompiler "/EHsc /W3 /nologo /O2 /Zi  /MD  " -o Release\oddeven.cu.obj "D:\Projects\ParallelSorting\cudaoddeven\oddeven.cu" 
@@ -32,4 +32,4 @@
 
 Сбой построения.
 
-Затраченное время: 00:00:07.56
+Затраченное время: 00:00:07.74

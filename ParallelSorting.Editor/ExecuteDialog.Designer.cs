@@ -33,14 +33,21 @@
             this.radioButtonOddeven = new System.Windows.Forms.RadioButton();
             this.radioButtonBitonic = new System.Windows.Forms.RadioButton();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.numericUpDownBlockSize = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownGridSize = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownNumberOfProcess = new System.Windows.Forms.NumericUpDown();
             this.radioButtonCuda = new System.Windows.Forms.RadioButton();
             this.radioButtonMpi = new System.Windows.Forms.RadioButton();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownBlockSize)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownGridSize)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownNumberOfProcess)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -50,7 +57,7 @@
             this.groupBox1.Controls.Add(this.radioButtonBitonic);
             this.groupBox1.Location = new System.Drawing.Point(72, 31);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(348, 140);
+            this.groupBox1.Size = new System.Drawing.Size(394, 140);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Algorithm";
@@ -90,28 +97,104 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.numericUpDown1);
+            this.groupBox2.Controls.Add(this.label2);
+            this.groupBox2.Controls.Add(this.label1);
+            this.groupBox2.Controls.Add(this.textBox1);
+            this.groupBox2.Controls.Add(this.numericUpDownBlockSize);
+            this.groupBox2.Controls.Add(this.numericUpDownGridSize);
+            this.groupBox2.Controls.Add(this.numericUpDownNumberOfProcess);
             this.groupBox2.Controls.Add(this.radioButtonCuda);
             this.groupBox2.Controls.Add(this.radioButtonMpi);
             this.groupBox2.Location = new System.Drawing.Point(72, 192);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(348, 104);
+            this.groupBox2.Size = new System.Drawing.Size(394, 104);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Platphorm";
             // 
-            // numericUpDown1
+            // label2
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(176, 33);
-            this.numericUpDown1.Minimum = new decimal(new int[] {
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(282, 62);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(16, 17);
+            this.label2.TabIndex = 7;
+            this.label2.Text = "=";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(211, 64);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(14, 17);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "x";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(304, 60);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
+            this.textBox1.Size = new System.Drawing.Size(61, 22);
+            this.textBox1.TabIndex = 5;
+            // 
+            // numericUpDownBlockSize
+            // 
+            this.numericUpDownBlockSize.Location = new System.Drawing.Point(229, 60);
+            this.numericUpDownBlockSize.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.numericUpDownBlockSize.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(120, 22);
-            this.numericUpDown1.TabIndex = 2;
-            this.numericUpDown1.Value = new decimal(new int[] {
+            this.numericUpDownBlockSize.Name = "numericUpDownBlockSize";
+            this.numericUpDownBlockSize.Size = new System.Drawing.Size(47, 22);
+            this.numericUpDownBlockSize.TabIndex = 4;
+            this.numericUpDownBlockSize.Value = new decimal(new int[] {
+            15,
+            0,
+            0,
+            0});
+            // 
+            // numericUpDownGridSize
+            // 
+            this.numericUpDownGridSize.Location = new System.Drawing.Point(156, 60);
+            this.numericUpDownGridSize.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.numericUpDownGridSize.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDownGridSize.Name = "numericUpDownGridSize";
+            this.numericUpDownGridSize.Size = new System.Drawing.Size(48, 22);
+            this.numericUpDownGridSize.TabIndex = 3;
+            this.numericUpDownGridSize.Value = new decimal(new int[] {
+            15,
+            0,
+            0,
+            0});
+            this.numericUpDownGridSize.Validated += new System.EventHandler(this.ValueChanged);
+            // 
+            // numericUpDownNumberOfProcess
+            // 
+            this.numericUpDownNumberOfProcess.Location = new System.Drawing.Point(156, 32);
+            this.numericUpDownNumberOfProcess.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDownNumberOfProcess.Name = "numericUpDownNumberOfProcess";
+            this.numericUpDownNumberOfProcess.Size = new System.Drawing.Size(120, 22);
+            this.numericUpDownNumberOfProcess.TabIndex = 2;
+            this.numericUpDownNumberOfProcess.Value = new decimal(new int[] {
             10,
             0,
             0,
@@ -174,7 +257,9 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownBlockSize)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownGridSize)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownNumberOfProcess)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -190,6 +275,11 @@
         private System.Windows.Forms.RadioButton radioButtonMpi;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.NumericUpDown numericUpDownNumberOfProcess;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.NumericUpDown numericUpDownBlockSize;
+        private System.Windows.Forms.NumericUpDown numericUpDownGridSize;
     }
 }

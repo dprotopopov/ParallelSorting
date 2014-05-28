@@ -8,6 +8,8 @@ namespace ParallelSorting.Experiment
         public DateTime EndDateTime { get; set; }
         public int ArraySize { get; set; }
         public int NumberMpiProcesses { get; set; }
+        public int GridSize { get; set; }
+        public int BlockSize { get; set; }
         public TimeSpan BitonicMpi { get; set; }
         public TimeSpan OddevenMpi { get; set; }
         public TimeSpan BucketMpi { get; set; }

@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
 	int oddrank;   /* Номер соседа при нечётной фазе обмена */
 	int evenrank;  /* Номер соседа при чётной фазе обмена */
 	int direction; /* Порядок сортировки 1 - по возрастанию, -1 по убыванию */
-	int i, j;
+	int i;
 	MPI_Status status;
 	char *inputFileName;
 	char *outputFileName;
