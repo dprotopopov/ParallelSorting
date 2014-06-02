@@ -1,10 +1,10 @@
+D:\Projects\ParallelSorting\ParallelSorting.Experiment\obj\Release\ParallelSorting.Experiment.Properties.Resources.resources
+D:\Projects\ParallelSorting\ParallelSorting.Experiment\obj\Release\ParallelSorting.Experiment.RunDialog.resources
+D:\Projects\ParallelSorting\ParallelSorting.Experiment\obj\Release\ParallelSorting.Experiment.csproj.GenerateResource.Cache
 D:\Projects\ParallelSorting\Release\ParallelSorting.Experiment.exe.config
 D:\Projects\ParallelSorting\Release\ParallelSorting.Experiment.exe
 D:\Projects\ParallelSorting\Release\ParallelSorting.Experiment.pdb
 D:\Projects\ParallelSorting\ParallelSorting.Experiment\obj\Release\ParallelSorting.Experiment.csprojResolveAssemblyReference.cache
-D:\Projects\ParallelSorting\ParallelSorting.Experiment\obj\Release\ParallelSorting.Experiment.Form1.resources
-D:\Projects\ParallelSorting\ParallelSorting.Experiment\obj\Release\ParallelSorting.Experiment.Properties.Resources.resources
-D:\Projects\ParallelSorting\ParallelSorting.Experiment\obj\Release\ParallelSorting.Experiment.RunDialog.resources
-D:\Projects\ParallelSorting\ParallelSorting.Experiment\obj\Release\ParallelSorting.Experiment.csproj.GenerateResource.Cache
 D:\Projects\ParallelSorting\ParallelSorting.Experiment\obj\Release\ParallelSorting.Experiment.exe
 D:\Projects\ParallelSorting\ParallelSorting.Experiment\obj\Release\ParallelSorting.Experiment.pdb
+D:\Projects\ParallelSorting\ParallelSorting.Experiment\obj\Release\ParallelSorting.Experiment.MainForm.resources

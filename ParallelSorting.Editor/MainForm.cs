@@ -1,12 +1,21 @@
 ﻿using System;
 using System.Windows.Forms;
+using MyFormula;
+using MiniMax.Forms;
 
 namespace ParallelSorting.Editor
 {
     public partial class MainForm : Form
     {
-        private readonly ExecuteDialog _executeDialog = new ExecuteDialog();
-        private readonly RandomDialog _randomDialog = new RandomDialog();
+        private static readonly BuildChooseDialog CudaBuildChooseDialog =
+            new BuildChooseDialog(typeof (MyCudaFormula));
+
+        private static readonly ExecuteDialog ExecuteDialog = new ExecuteDialog
+        {
+            CudaBuildChooseDialog = CudaBuildChooseDialog
+        };
+
+        private static readonly RandomDialog RandomDialog = new RandomDialog();
 
         public MainForm()
         {
@@ -26,8 +35,8 @@ namespace ParallelSorting.Editor
         {
             var child = ActiveMdiChild as ChildForm;
             if (child == null) return;
-            if (_randomDialog.ShowDialog() != DialogResult.OK) return;
-            child.Random(_randomDialog.Count);
+            if (RandomDialog.ShowDialog() != DialogResult.OK) return;
+            child.Random(RandomDialog.Count);
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -55,10 +64,10 @@ namespace ParallelSorting.Editor
         {
             var child = ActiveMdiChild as ChildForm;
             if (child == null) return;
-            if (_executeDialog.ShowDialog() != DialogResult.OK) return;
-            if (!_executeDialog.IsValid()) return;
-            child.Execute(_executeDialog.NumberOfProcess, _executeDialog.GridSize, _executeDialog.BlockSize,
-                _executeDialog.SortingAlgorithm, _executeDialog.ExecutionMethod);
+            if (ExecuteDialog.ShowDialog() != DialogResult.OK) return;
+            if (!ExecuteDialog.IsValid()) return;
+            child.Execute(ExecuteDialog.NumberOfProcess, ExecuteDialog.GridSize, ExecuteDialog.BlockSize,
+                ExecuteDialog.SortingAlgorithm, ExecuteDialog.ExecutionMethod);
         }
 
         private void checkToolStripMenuItem_Click(object sender, EventArgs e)
@@ -66,6 +75,11 @@ namespace ParallelSorting.Editor
             var child = ActiveMdiChild as ChildForm;
             if (child == null) return;
             child.Check();
+        }
+
+        private void cudaOptimalBuilderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CudaBuildChooseDialog.ShowDialog();
         }
     }
 }

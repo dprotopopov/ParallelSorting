@@ -33,6 +33,7 @@
             this.radioButtonOddeven = new System.Windows.Forms.RadioButton();
             this.radioButtonBitonic = new System.Windows.Forms.RadioButton();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.buttonCudaChoose = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
@@ -57,46 +58,47 @@
             this.groupBox1.Controls.Add(this.radioButtonBitonic);
             this.groupBox1.Location = new System.Drawing.Point(72, 31);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(394, 140);
+            this.groupBox1.Size = new System.Drawing.Size(521, 140);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Algorithm";
+            this.groupBox1.Text = "Алгоритм";
             // 
             // radioButtonBucket
             // 
             this.radioButtonBucket.AutoSize = true;
-            this.radioButtonBucket.Location = new System.Drawing.Point(124, 88);
+            this.radioButtonBucket.Location = new System.Drawing.Point(156, 85);
             this.radioButtonBucket.Name = "radioButtonBucket";
-            this.radioButtonBucket.Size = new System.Drawing.Size(72, 21);
+            this.radioButtonBucket.Size = new System.Drawing.Size(181, 21);
             this.radioButtonBucket.TabIndex = 2;
             this.radioButtonBucket.TabStop = true;
-            this.radioButtonBucket.Text = "Bucket";
+            this.radioButtonBucket.Text = "Корзинная сортировка";
             this.radioButtonBucket.UseVisualStyleBackColor = true;
             // 
             // radioButtonOddeven
             // 
             this.radioButtonOddeven.AutoSize = true;
-            this.radioButtonOddeven.Location = new System.Drawing.Point(124, 60);
+            this.radioButtonOddeven.Location = new System.Drawing.Point(156, 57);
             this.radioButtonOddeven.Name = "radioButtonOddeven";
-            this.radioButtonOddeven.Size = new System.Drawing.Size(92, 21);
+            this.radioButtonOddeven.Size = new System.Drawing.Size(218, 21);
             this.radioButtonOddeven.TabIndex = 1;
             this.radioButtonOddeven.TabStop = true;
-            this.radioButtonOddeven.Text = "Odd-even";
+            this.radioButtonOddeven.Text = "Чётно-нечётная сортировка";
             this.radioButtonOddeven.UseVisualStyleBackColor = true;
             // 
             // radioButtonBitonic
             // 
             this.radioButtonBitonic.AutoSize = true;
-            this.radioButtonBitonic.Location = new System.Drawing.Point(124, 32);
+            this.radioButtonBitonic.Location = new System.Drawing.Point(156, 29);
             this.radioButtonBitonic.Name = "radioButtonBitonic";
-            this.radioButtonBitonic.Size = new System.Drawing.Size(71, 21);
+            this.radioButtonBitonic.Size = new System.Drawing.Size(203, 21);
             this.radioButtonBitonic.TabIndex = 0;
             this.radioButtonBitonic.TabStop = true;
-            this.radioButtonBitonic.Text = "Bitonic";
+            this.radioButtonBitonic.Text = "Битоническая сортировка";
             this.radioButtonBitonic.UseVisualStyleBackColor = true;
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.buttonCudaChoose);
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Controls.Add(this.textBox1);
@@ -107,10 +109,20 @@
             this.groupBox2.Controls.Add(this.radioButtonMpi);
             this.groupBox2.Location = new System.Drawing.Point(72, 192);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(394, 104);
+            this.groupBox2.Size = new System.Drawing.Size(521, 104);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Platphorm";
+            this.groupBox2.Text = "Платформа";
+            // 
+            // buttonCudaChoose
+            // 
+            this.buttonCudaChoose.Location = new System.Drawing.Point(397, 59);
+            this.buttonCudaChoose.Name = "buttonCudaChoose";
+            this.buttonCudaChoose.Size = new System.Drawing.Size(75, 23);
+            this.buttonCudaChoose.TabIndex = 8;
+            this.buttonCudaChoose.Text = "Опции";
+            this.buttonCudaChoose.UseVisualStyleBackColor = true;
+            this.buttonCudaChoose.Click += new System.EventHandler(this.buttonCudaChoose_Click);
             // 
             // label2
             // 
@@ -142,7 +154,7 @@
             // 
             this.numericUpDownBlockSize.Location = new System.Drawing.Point(229, 60);
             this.numericUpDownBlockSize.Maximum = new decimal(new int[] {
-            255,
+            1024,
             0,
             0,
             0});
@@ -225,7 +237,7 @@
             // button1
             // 
             this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.button1.Location = new System.Drawing.Point(264, 325);
+            this.button1.Location = new System.Drawing.Point(437, 332);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 2;
@@ -235,7 +247,7 @@
             // button2
             // 
             this.button2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button2.Location = new System.Drawing.Point(345, 325);
+            this.button2.Location = new System.Drawing.Point(518, 332);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 3;
@@ -246,7 +258,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(521, 380);
+            this.ClientSize = new System.Drawing.Size(676, 395);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.groupBox2);
@@ -281,5 +293,6 @@
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.NumericUpDown numericUpDownBlockSize;
         private System.Windows.Forms.NumericUpDown numericUpDownGridSize;
+        private System.Windows.Forms.Button buttonCudaChoose;
     }
 }
