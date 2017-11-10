@@ -88,18 +88,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\MiniMax\MiniMax\MiniMax.csproj">
-      <Project>{0ece0fc2-deb3-4f20-a2b8-64d0302387e7}</Project>
-      <Name>MiniMax</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\MyLibrary\MyLibrary\MyLibrary.csproj">
-      <Project>{e80cf993-5e07-4875-85fe-a2adcf76558d}</Project>
-      <Name>MyLibrary</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\MyMathLibrary\MyMath\MyMath.csproj">
-      <Project>{5f759e1e-27bb-4127-ae22-d220f6afbc71}</Project>
-      <Name>MyMath</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ParallelSorting.Editor\ParallelSorting.Editor.csproj">
       <Project>{535e22b0-94d0-4637-bdcf-9669486b5070}</Project>
       <Name>ParallelSorting.Editor</Name>

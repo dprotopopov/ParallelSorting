@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Forms;
-using MiniMax.Forms;
-using Boolean = MyLibrary.Types.Boolean;
 
 namespace ParallelSorting.Editor
 {
@@ -12,8 +10,6 @@ namespace ParallelSorting.Editor
         {
             InitializeComponent();
         }
-
-        public BuildChooseDialog CudaBuildChooseDialog { get; set; }
 
         public SortingAlgorithm SortingAlgorithm
         {
@@ -64,6 +60,7 @@ namespace ParallelSorting.Editor
         public int NumberOfProcess
         {
             get { return Convert.ToInt32(numericUpDownNumberOfProcess.Value); }
+            set { numericUpDownNumberOfProcess.Value = value; }
         }
 
         public int GridSize
@@ -78,23 +75,16 @@ namespace ParallelSorting.Editor
             set { numericUpDownBlockSize.Value = value; }
         }
 
+
         public bool IsValid()
         {
-            return Boolean.Xor(IsCuda, IsMpi) &&
-                   Boolean.Xor(IsBitonic, IsOddeven, IsBucket);
+            return (IsCuda ^ IsMpi) &&
+                   (IsBitonic ^ IsOddeven ^ IsBucket);
         }
 
         private void ValueChanged(object sender, EventArgs e)
         {
             textBox1.Text = (GridSize*BlockSize).ToString(CultureInfo.InvariantCulture);
-        }
-
-        private void buttonCudaChoose_Click(object sender, EventArgs e)
-        {
-            if (CudaBuildChooseDialog.ShowDialog() != DialogResult.OK) return;
-            MyLibrary.Collections.Properties values = CudaBuildChooseDialog.Values;
-            GridSize = 1;
-            BlockSize = Convert.ToInt32(values["N"]);
         }
     }
 }

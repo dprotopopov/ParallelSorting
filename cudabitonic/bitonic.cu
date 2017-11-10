@@ -112,7 +112,7 @@ __host__ void host_bitonic_sort(int gridSize, int blockSize, T *data, int n, int
 					int threads = (blockSize > 0)? blockSize : min(15, 1 << (int)k/3);
 					int loops = ((1 << (k - 1)) + (blocks*threads - 1))/(blocks*threads);
 
-					assert((1<<(k - 1)) == 2*blocks*threads*loops);
+					assert((1<<(k - 1)) == blocks*threads*loops);
 
 					// одинаковый шаг в каждом блоке гарантирует отсутствие коллизий (одновременного доступа к одним и тем же данным)
 					global_bitonic_worker<T> <<< blocks, threads >>>(&device_data[n&((1<<k)-1)], n&(1<<k), i, j, loops, direction);

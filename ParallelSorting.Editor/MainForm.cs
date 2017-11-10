@@ -1,19 +1,11 @@
 ﻿using System;
 using System.Windows.Forms;
-using MyFormula;
-using MiniMax.Forms;
 
 namespace ParallelSorting.Editor
 {
     public partial class MainForm : Form
     {
-        private static readonly BuildChooseDialog CudaBuildChooseDialog =
-            new BuildChooseDialog(typeof (MyCudaFormula));
-
-        private static readonly ExecuteDialog ExecuteDialog = new ExecuteDialog
-        {
-            CudaBuildChooseDialog = CudaBuildChooseDialog
-        };
+        private static readonly ExecuteDialog ExecuteDialog = new ExecuteDialog();
 
         private static readonly RandomDialog RandomDialog = new RandomDialog();
 
@@ -47,7 +39,7 @@ namespace ParallelSorting.Editor
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (openFileDialog1.ShowDialog() != DialogResult.OK) return;
-            ChildForm child = ChildForm.OpenFile(openFileDialog1.FileName);
+            var child = ChildForm.OpenFile(openFileDialog1.FileName);
             child.MdiParent = this;
             child.Show();
         }
@@ -68,18 +60,6 @@ namespace ParallelSorting.Editor
             if (!ExecuteDialog.IsValid()) return;
             child.Execute(ExecuteDialog.NumberOfProcess, ExecuteDialog.GridSize, ExecuteDialog.BlockSize,
                 ExecuteDialog.SortingAlgorithm, ExecuteDialog.ExecutionMethod);
-        }
-
-        private void checkToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var child = ActiveMdiChild as ChildForm;
-            if (child == null) return;
-            child.Check();
-        }
-
-        private void cudaOptimalBuilderToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            CudaBuildChooseDialog.ShowDialog();
         }
     }
 }

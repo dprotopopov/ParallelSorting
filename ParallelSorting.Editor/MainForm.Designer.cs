@@ -37,10 +37,6 @@
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.randomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.executeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.checkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.optimalBuilderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.cudaOptimalBuilderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.mpiOptimalBuilderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.menuStrip1.SuspendLayout();
@@ -48,15 +44,15 @@
             // 
             // menuStrip1
             // 
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.randomToolStripMenuItem,
-            this.executeToolStripMenuItem,
-            this.checkToolStripMenuItem,
-            this.optimalBuilderToolStripMenuItem});
+            this.executeToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(843, 28);
+            this.menuStrip1.Padding = new System.Windows.Forms.Padding(7, 2, 0, 2);
+            this.menuStrip1.Size = new System.Drawing.Size(948, 33);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -69,84 +65,55 @@
             this.toolStripSeparator1,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(57, 24);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(65, 29);
             this.fileToolStripMenuItem.Text = "Файл";
             // 
             // newToolStripMenuItem
             // 
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(178, 24);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(214, 30);
             this.newToolStripMenuItem.Text = "Новый";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(178, 24);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(214, 30);
             this.openToolStripMenuItem.Text = "Открыть";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
             // saveAsToolStripMenuItem
             // 
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(178, 24);
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(214, 30);
             this.saveAsToolStripMenuItem.Text = "Сохранить как";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(175, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(211, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(178, 24);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(214, 30);
             this.exitToolStripMenuItem.Text = "Выход";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // randomToolStripMenuItem
             // 
             this.randomToolStripMenuItem.Name = "randomToolStripMenuItem";
-            this.randomToolStripMenuItem.Size = new System.Drawing.Size(88, 24);
+            this.randomToolStripMenuItem.Size = new System.Drawing.Size(103, 29);
             this.randomToolStripMenuItem.Text = "Случайно";
             this.randomToolStripMenuItem.Click += new System.EventHandler(this.randomToolStripMenuItem_Click);
             // 
             // executeToolStripMenuItem
             // 
             this.executeToolStripMenuItem.Name = "executeToolStripMenuItem";
-            this.executeToolStripMenuItem.Size = new System.Drawing.Size(99, 24);
+            this.executeToolStripMenuItem.Size = new System.Drawing.Size(113, 29);
             this.executeToolStripMenuItem.Text = "Выполнить";
             this.executeToolStripMenuItem.Click += new System.EventHandler(this.executeToolStripMenuItem_Click);
-            // 
-            // checkToolStripMenuItem
-            // 
-            this.checkToolStripMenuItem.Name = "checkToolStripMenuItem";
-            this.checkToolStripMenuItem.Size = new System.Drawing.Size(98, 24);
-            this.checkToolStripMenuItem.Text = "Проверить";
-            this.checkToolStripMenuItem.Click += new System.EventHandler(this.checkToolStripMenuItem_Click);
-            // 
-            // optimalBuilderToolStripMenuItem
-            // 
-            this.optimalBuilderToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.cudaOptimalBuilderToolStripMenuItem,
-            this.mpiOptimalBuilderToolStripMenuItem});
-            this.optimalBuilderToolStripMenuItem.Name = "optimalBuilderToolStripMenuItem";
-            this.optimalBuilderToolStripMenuItem.Size = new System.Drawing.Size(117, 24);
-            this.optimalBuilderToolStripMenuItem.Text = "Выбор опций";
-            // 
-            // cudaOptimalBuilderToolStripMenuItem
-            // 
-            this.cudaOptimalBuilderToolStripMenuItem.Name = "cudaOptimalBuilderToolStripMenuItem";
-            this.cudaOptimalBuilderToolStripMenuItem.Size = new System.Drawing.Size(221, 24);
-            this.cudaOptimalBuilderToolStripMenuItem.Text = "Cuda Optimal Builder";
-            this.cudaOptimalBuilderToolStripMenuItem.Click += new System.EventHandler(this.cudaOptimalBuilderToolStripMenuItem_Click);
-            // 
-            // mpiOptimalBuilderToolStripMenuItem
-            // 
-            this.mpiOptimalBuilderToolStripMenuItem.Name = "mpiOptimalBuilderToolStripMenuItem";
-            this.mpiOptimalBuilderToolStripMenuItem.Size = new System.Drawing.Size(221, 24);
-            this.mpiOptimalBuilderToolStripMenuItem.Text = "Mpi Optimal Builder";
             // 
             // openFileDialog1
             // 
@@ -154,12 +121,13 @@
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(843, 553);
+            this.ClientSize = new System.Drawing.Size(948, 691);
             this.Controls.Add(this.menuStrip1);
             this.IsMdiContainer = true;
             this.MainMenuStrip = this.menuStrip1;
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "MainForm";
             this.Text = "Parallel Sorting";
             this.menuStrip1.ResumeLayout(false);
@@ -182,10 +150,6 @@
         private System.Windows.Forms.ToolStripMenuItem executeToolStripMenuItem;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
-        private System.Windows.Forms.ToolStripMenuItem checkToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem optimalBuilderToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem cudaOptimalBuilderToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem mpiOptimalBuilderToolStripMenuItem;
     }
 }
 

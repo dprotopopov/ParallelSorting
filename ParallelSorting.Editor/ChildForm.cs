@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using MyLibrary.Collections;
 
 namespace ParallelSorting.Editor
 {
@@ -39,10 +39,10 @@ namespace ParallelSorting.Editor
         public void Random(int count)
         {
             textBox1.Clear();
-            for (int i = 0; i < count;)
+            for (var i = 0; i < count;)
             {
-                var list = new StackListQueue<string>();
-                for (int j = 0; j < 8 && i < count; j++,i++)
+                var list = new List<string>();
+                for (var j = 0; j < 8 && i < count; j++,i++)
                     list.Add(((1 - (Rnd.Next() & 2))*Rnd.Next()).ToString(CultureInfo.InvariantCulture));
                 textBox1.AppendText(string.Join("\t", list));
                 textBox1.AppendText(Environment.NewLine);
@@ -52,9 +52,9 @@ namespace ParallelSorting.Editor
         public void Execute(int numberOfProcess, int gridSize, int blockSize, SortingAlgorithm sortingAlgorithm,
             ExecutionMethod executionMethod)
         {
-            string inputFileName = Path.GetTempPath() + Guid.NewGuid() + ".txt";
-            string outputFileName = Path.GetTempPath() + Guid.NewGuid() + ".txt";
-            string commandFormat = (from object[] item in new object[]
+            var inputFileName = Path.GetTempPath() + Guid.NewGuid() + ".txt";
+            var outputFileName = Path.GetTempPath() + Guid.NewGuid() + ".txt";
+            var commandFormat = (from object[] item in new object[]
             {
                 new object[]
                 {
@@ -68,7 +68,7 @@ namespace ParallelSorting.Editor
                 },
                 new object[]
                 {
-                    SortingAlgorithm.Bucket, ExecutionMethod.Mpi, 
+                    SortingAlgorithm.Bucket, ExecutionMethod.Mpi,
                     "/C mpiexec -n {0} mpibucket {3} {4} >> sorting.log"
                 },
                 new object[]
@@ -90,14 +90,14 @@ namespace ParallelSorting.Editor
                 where (SortingAlgorithm) item[0] == sortingAlgorithm && (ExecutionMethod) item[1] == executionMethod
                 select (string) item[2]).FirstOrDefault();
             if (string.IsNullOrEmpty(commandFormat)) throw new NotImplementedException();
-            string command = string.Format(commandFormat, numberOfProcess, gridSize, blockSize, inputFileName,
+            var command = string.Format(commandFormat, numberOfProcess, gridSize, blockSize, inputFileName,
                 outputFileName);
 
             using (var writer = new StreamWriter(File.Open(inputFileName, FileMode.Create)))
                 writer.Write(textBox1.Text);
 
             Debug.WriteLine(command);
-            Process process = Process.Start("cmd", command);
+            var process = Process.Start("cmd", command);
 
             if (process == null) return;
             process.WaitForExit();
@@ -105,18 +105,6 @@ namespace ParallelSorting.Editor
             if (process.ExitCode != 0) return;
             using (var reader = new StreamReader(File.Open(outputFileName, FileMode.Open)))
                 textBox1.Text = reader.ReadToEnd();
-        }
-
-        public void Check()
-        {
-            var list =
-                new SortedStackListQueue<long>(
-                    (from Match match in Regex.Matches(textBox1.Text, @"[-]?\d+") select Convert.ToInt32(match.Value))
-                        .Select(dummy => (long) dummy))
-                {
-                    Comparer = new LongComparer()
-                };
-            MessageBox.Show(list.IsSorted(list) ? "Sorted" : "No sorted");
         }
     }
 }
