@@ -3,6 +3,7 @@
     public enum ExecutionMethod
     {
         Mpi,
-        Cuda
+        Cuda,
+        Net
     };
 }

@@ -28,63 +28,57 @@ namespace ParallelSorting.Editor
             {
                 if (IsMpi) return ExecutionMethod.Mpi;
                 if (IsCuda) return ExecutionMethod.Cuda;
+                if (IsNet) return ExecutionMethod.Net;
                 throw new NotImplementedException();
             }
         }
 
-        private bool IsBitonic
-        {
-            get { return radioButtonBitonic.Checked; }
-        }
+        private bool IsBitonic => radioButtonBitonic.Checked;
 
-        private bool IsOddeven
-        {
-            get { return radioButtonOddeven.Checked; }
-        }
+        private bool IsOddeven => radioButtonOddeven.Checked;
 
-        private bool IsBucket
-        {
-            get { return radioButtonBucket.Checked; }
-        }
+        private bool IsBucket => radioButtonBucket.Checked;
 
-        private bool IsCuda
-        {
-            get { return radioButtonCuda.Checked; }
-        }
+        private bool IsCuda => radioButtonCuda.Checked;
 
-        private bool IsMpi
-        {
-            get { return radioButtonMpi.Checked; }
-        }
+        private bool IsMpi => radioButtonMpi.Checked;
+
+        private bool IsNet => radioButtonNet.Checked;
 
         public int NumberOfProcess
         {
-            get { return Convert.ToInt32(numericUpDownNumberOfProcess.Value); }
-            set { numericUpDownNumberOfProcess.Value = value; }
+            get => Convert.ToInt32(numericUpDownNumberOfProcess.Value);
+            set => numericUpDownNumberOfProcess.Value = value;
+        }
+
+        public int DegreeOfParallelism
+        {
+            get => Convert.ToInt32(numericUpDownDegreeOfParallelism.Value);
+            set => numericUpDownDegreeOfParallelism.Value = value;
         }
 
         public int GridSize
         {
-            get { return Convert.ToInt32(numericUpDownGridSize.Value); }
-            set { numericUpDownGridSize.Value = value; }
+            get => Convert.ToInt32(numericUpDownGridSize.Value);
+            set => numericUpDownGridSize.Value = value;
         }
 
         public int BlockSize
         {
-            get { return Convert.ToInt32(numericUpDownBlockSize.Value); }
-            set { numericUpDownBlockSize.Value = value; }
+            get => Convert.ToInt32(numericUpDownBlockSize.Value);
+            set => numericUpDownBlockSize.Value = value;
         }
 
 
         public bool IsValid()
         {
-            return (IsCuda ^ IsMpi) &&
-                   (IsBitonic ^ IsOddeven ^ IsBucket);
+            return IsCuda ^ IsMpi ^ IsNet &&
+                   IsBitonic ^ IsOddeven ^ IsBucket;
         }
 
         private void ValueChanged(object sender, EventArgs e)
         {
-            textBox1.Text = (GridSize*BlockSize).ToString(CultureInfo.InvariantCulture);
+            textBox1.Text = (GridSize * BlockSize).ToString(CultureInfo.InvariantCulture);
         }
     }
 }

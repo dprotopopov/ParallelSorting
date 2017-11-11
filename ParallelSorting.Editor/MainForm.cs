@@ -59,6 +59,7 @@ namespace ParallelSorting.Editor
             if (ExecuteDialog.ShowDialog() != DialogResult.OK) return;
             if (!ExecuteDialog.IsValid()) return;
             child.Execute(ExecuteDialog.NumberOfProcess, ExecuteDialog.GridSize, ExecuteDialog.BlockSize,
+                ExecuteDialog.DegreeOfParallelism,
                 ExecuteDialog.SortingAlgorithm, ExecuteDialog.ExecutionMethod);
         }
     }
