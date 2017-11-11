@@ -29,7 +29,8 @@ namespace netbucket
         {
             if (args.Length < 1)
             {
-                Console.WriteLine("Usage : <program> [-n <numberOfThreads>] [-o <sortOrder>] [-b <numberOfBuckets>] <inputfile> <outputfile>");
+                Console.WriteLine(
+                    "Usage : <program> [-n <numberOfThreads>] [-o <sortOrder>] [-b <numberOfBuckets>] <inputfile> <outputfile>");
                 return;
             }
 
@@ -98,17 +99,17 @@ namespace netbucket
             var count = list.Count();
             var buckets = new List<List<long>>();
             for (var i = 0; i < numberOfBuckets; i++) buckets.Add(new List<long>());
-            Parallel.ForEach(Enumerable.Range(0, numberOfThreads), i =>
+            Parallel.ForEach(Enumerable.Range(0, numberOfThreads), t =>
             {
-                for (var j = 0; j * numberOfThreads + i < count; j++)
+                for (var index = t; index < count; index += numberOfThreads)
                 {
-                    var value = list.ElementAt(j);
+                    var value = list[index];
 
                     // Определяем номер корзины
                     var bucketIndex = numberOfBuckets * ((decimal) value - low) / ((decimal) high + 1 - low);
 
                     // Добавляем элемент в корзину
-                    buckets.ElementAt((int) bucketIndex).Add(value);
+                    buckets[(int) bucketIndex].Add(value);
                 }
             });
 
@@ -119,7 +120,8 @@ namespace netbucket
                 if (buckets.ElementAt(index).Count < 2) continue;
                 var bucketLow = low + index * ((decimal) high + 1 - low) / numberOfBuckets;
                 var bucketHigh = low + (index + 1) * ((decimal) high + 1 - low) / numberOfBuckets - 1;
-                Sort(buckets.ElementAt(index), numberOfBuckets, numberOfThreads, sortOrder, (long) bucketLow, (long) bucketHigh);
+                Sort(buckets.ElementAt(index), numberOfBuckets, numberOfThreads, sortOrder, (long) bucketLow,
+                    (long) bucketHigh);
             }
 
             switch (sortOrder)
