@@ -54,6 +54,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "netoddeven", "netoddeven\ne
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "netbitonic", "netbitonic\netbitonic.csproj", "{2F0ABFC5-7D93-4EF5-9BC6-D956A78306FF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskRun", "TaskRun\TaskRun.csproj", "{C964EBBA-798C-491E-9980-BC3128A8139F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -254,6 +256,26 @@ Global
 		{2F0ABFC5-7D93-4EF5-9BC6-D956A78306FF}.Release|x64.Build.0 = Release|Any CPU
 		{2F0ABFC5-7D93-4EF5-9BC6-D956A78306FF}.Release|x86.ActiveCfg = Release|Any CPU
 		{2F0ABFC5-7D93-4EF5-9BC6-D956A78306FF}.Release|x86.Build.0 = Release|Any CPU
+		{C964EBBA-798C-491E-9980-BC3128A8139F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C964EBBA-798C-491E-9980-BC3128A8139F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C964EBBA-798C-491E-9980-BC3128A8139F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{C964EBBA-798C-491E-9980-BC3128A8139F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{C964EBBA-798C-491E-9980-BC3128A8139F}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{C964EBBA-798C-491E-9980-BC3128A8139F}.Debug|Win32.Build.0 = Debug|Any CPU
+		{C964EBBA-798C-491E-9980-BC3128A8139F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C964EBBA-798C-491E-9980-BC3128A8139F}.Debug|x64.Build.0 = Debug|Any CPU
+		{C964EBBA-798C-491E-9980-BC3128A8139F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C964EBBA-798C-491E-9980-BC3128A8139F}.Debug|x86.Build.0 = Debug|Any CPU
+		{C964EBBA-798C-491E-9980-BC3128A8139F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C964EBBA-798C-491E-9980-BC3128A8139F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C964EBBA-798C-491E-9980-BC3128A8139F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{C964EBBA-798C-491E-9980-BC3128A8139F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{C964EBBA-798C-491E-9980-BC3128A8139F}.Release|Win32.ActiveCfg = Release|Any CPU
+		{C964EBBA-798C-491E-9980-BC3128A8139F}.Release|Win32.Build.0 = Release|Any CPU
+		{C964EBBA-798C-491E-9980-BC3128A8139F}.Release|x64.ActiveCfg = Release|Any CPU
+		{C964EBBA-798C-491E-9980-BC3128A8139F}.Release|x64.Build.0 = Release|Any CPU
+		{C964EBBA-798C-491E-9980-BC3128A8139F}.Release|x86.ActiveCfg = Release|Any CPU
+		{C964EBBA-798C-491E-9980-BC3128A8139F}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -99,19 +99,43 @@ namespace netbucket
             var count = list.Count();
             var buckets = new List<List<long>>();
             for (var i = 0; i < numberOfBuckets; i++) buckets.Add(new List<long>());
-            Parallel.ForEach(Enumerable.Range(0, numberOfThreads), t =>
+
+            var tasks = new List<Task>();
+            for (var loop = 0; loop < numberOfThreads; loop++)
             {
-                for (var index = t; index < count; index += numberOfThreads)
+                // https://stackoverflow.com/questions/33275831/for-loop-result-in-overflow-with-task-run-or-task-start
+                var t = loop;
+                var task = Task.Run(() =>
                 {
-                    var value = list[index];
+                    Console.WriteLine($"Thread #{t}");
+                    for (var index = t; index < count; index += numberOfThreads)
+                    {
+                        var value = list[index];
 
-                    // Определяем номер корзины
-                    var bucketIndex = numberOfBuckets * ((decimal) value - low) / ((decimal) high + 1 - low);
+                        // Определяем номер корзины
+                        var bucketIndex = numberOfBuckets * ((decimal)value - low) / ((decimal)high + 1 - low);
 
-                    // Добавляем элемент в корзину
-                    buckets[(int) bucketIndex].Add(value);
-                }
-            });
+                        // Добавляем элемент в корзину
+                        buckets[(int)bucketIndex].Add(value);
+                    }
+                });
+                tasks.Add(task);
+            }
+            Task.WaitAll(tasks.ToArray());
+
+            //Parallel.ForEach(Enumerable.Range(0, numberOfThreads), t =>
+            //{
+            //    for (var index = t; index < count; index += numberOfThreads)
+            //    {
+            //        var value = list[index];
+
+            //        // Определяем номер корзины
+            //        var bucketIndex = numberOfBuckets * ((decimal) value - low) / ((decimal) high + 1 - low);
+
+            //        // Добавляем элемент в корзину
+            //        buckets[(int) bucketIndex].Add(value);
+            //    }
+            //});
 
             list.Clear();
 

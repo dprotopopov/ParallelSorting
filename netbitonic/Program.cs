@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -121,37 +120,81 @@ namespace netbitonic
                     for (var j = i; j >= 0; j--)
                     {
                         var step = 1 << j;
-                        Parallel.ForEach(Enumerable.Range(0, numberOfThreads), t =>
+                        var tasks = new List<Task>();
+
+                        for (var loop = 0; loop < numberOfThreads; loop++)
                         {
-                            for (var id = t; id < 1 << (k - 1); id += numberOfThreads)
+                            // https://stackoverflow.com/questions/33275831/for-loop-result-in-overflow-with-task-run-or-task-start
+                            var t = loop;
+                            var task = Task.Run(() =>
                             {
-                                var parity = id >> i;
-                                while (parity > 1) parity = (parity >> 1) ^ (parity & 1);
-                                parity =
-                                    1 - (parity << 1); // теперь переменная parity может иметь только 2 значения 1 и -1
-                                var offset = (count & ((1 << k) - 1)) + ((id >> j) << (j + 1)) + (id & ((1 << j) - 1));
-                                if (offset + step < count)
-                                    switch (sortOrder * parity)
-                                    {
-                                        case (int) SortOrder.Asc:
-                                            if (list[offset] > list[offset + step])
-                                            {
-                                                var x = list[offset];
-                                                list[offset] = list[offset + step];
-                                                list[offset + step] = x;
-                                            }
-                                            break;
-                                        case (int) SortOrder.Desc:
-                                            if (list[offset] < list[offset + step])
-                                            {
-                                                var x = list[offset];
-                                                list[offset] = list[offset + step];
-                                                list[offset + step] = x;
-                                            }
-                                            break;
-                                    }
-                            }
-                        });
+                                Console.WriteLine($"Thread #{t}");
+                                for (var id = t; id < 1 << (k - 1); id += numberOfThreads)
+                                {
+                                    var parity = id >> i;
+                                    while (parity > 1) parity = (parity >> 1) ^ (parity & 1);
+                                    parity =
+                                        1 - (parity <<
+                                             1); // теперь переменная parity может иметь только 2 значения 1 и -1
+                                    var offset = (count & ((1 << k) - 1)) + ((id >> j) << (j + 1)) +
+                                                 (id & ((1 << j) - 1));
+                                    if (offset + step < count)
+                                        switch (sortOrder * parity)
+                                        {
+                                            case (int) SortOrder.Asc:
+                                                if (list[offset] > list[offset + step])
+                                                {
+                                                    var x = list[offset];
+                                                    list[offset] = list[offset + step];
+                                                    list[offset + step] = x;
+                                                }
+                                                break;
+                                            case (int) SortOrder.Desc:
+                                                if (list[offset] < list[offset + step])
+                                                {
+                                                    var x = list[offset];
+                                                    list[offset] = list[offset + step];
+                                                    list[offset + step] = x;
+                                                }
+                                                break;
+                                        }
+                                }
+                            });
+                            tasks.Add(task);
+                        }
+                        Task.WaitAll(tasks.ToArray());
+
+                        //Parallel.ForEach(Enumerable.Range(0, numberOfThreads), t =>
+                        //{
+                        //    for (var id = t; id < 1 << (k - 1); id += numberOfThreads)
+                        //    {
+                        //        var parity = id >> i;
+                        //        while (parity > 1) parity = (parity >> 1) ^ (parity & 1);
+                        //        parity =
+                        //            1 - (parity << 1); // теперь переменная parity может иметь только 2 значения 1 и -1
+                        //        var offset = (count & ((1 << k) - 1)) + ((id >> j) << (j + 1)) + (id & ((1 << j) - 1));
+                        //        if (offset + step < count)
+                        //            switch (sortOrder * parity)
+                        //            {
+                        //                case (int) SortOrder.Asc:
+                        //                    if (list[offset] > list[offset + step])
+                        //                    {
+                        //                        var x = list[offset];
+                        //                        list[offset] = list[offset + step];
+                        //                        list[offset + step] = x;
+                        //                    }
+                        //                    break;
+                        //                case (int) SortOrder.Desc:
+                        //                    if (list[offset] < list[offset + step])
+                        //                    {
+                        //                        var x = list[offset];
+                        //                        list[offset] = list[offset + step];
+                        //                        list[offset + step] = x;
+                        //                    }
+                        //                    break;
+                        //            }
+                        //    }
+                        //});
                     }
             // Теперь надо произвести слияние уже отсортированных массивов
             var arr = new long[count];
@@ -182,6 +225,40 @@ namespace netbitonic
             }
             list.Clear();
             list.AddRange(arr);
+        }
+
+        private static void SortThread(List<long> list, int numberOfThreads, int sortOrder, int t, int k, int i, int j,
+            int step, int count)
+        {
+            Console.WriteLine($"Thread #{t}");
+            for (var id = t; id < 1 << (k - 1); id += numberOfThreads)
+            {
+                var parity = id >> i;
+                while (parity > 1) parity = (parity >> 1) ^ (parity & 1);
+                parity =
+                    1 - (parity << 1); // теперь переменная parity может иметь только 2 значения 1 и -1
+                var offset = (count & ((1 << k) - 1)) + ((id >> j) << (j + 1)) + (id & ((1 << j) - 1));
+                if (offset + step < count)
+                    switch (sortOrder * parity)
+                    {
+                        case (int) SortOrder.Asc:
+                            if (list[offset] > list[offset + step])
+                            {
+                                var x = list[offset];
+                                list[offset] = list[offset + step];
+                                list[offset + step] = x;
+                            }
+                            break;
+                        case (int) SortOrder.Desc:
+                            if (list[offset] < list[offset + step])
+                            {
+                                var x = list[offset];
+                                list[offset] = list[offset + step];
+                                list[offset + step] = x;
+                            }
+                            break;
+                    }
+            }
         }
     }
 }

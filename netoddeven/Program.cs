@@ -100,31 +100,63 @@ namespace netoddeven
         private static void Sort(List<long> list, int numberOfThreads, int sortOrder)
         {
             var count = list.Count;
-            var blockSize = (list.Count + 2 * numberOfThreads) / (2 * numberOfThreads + 1);
-            var numberOfIterations = numberOfThreads + 2;
+            var blockSize = (count + 2 * numberOfThreads) / (2 * numberOfThreads + 1);
+            var numberOfIterations = 2 * numberOfThreads + 1;
             for (var j = 0; j < numberOfIterations; j++)
             {
                 var parity = j & 1;
-                Parallel.ForEach(Enumerable.Range(0, numberOfThreads), i =>
+
+                var tasks = new List<Task>();
+                for (var loop = 0; loop < numberOfThreads; loop++)
                 {
-                    var index = blockSize * (2 * i + parity);
-                    var twoBlocks = new List<long>();
-                    for (var k = index; k < index + 2 * blockSize && k < count; k++)
-                        twoBlocks.Add(list[k]);
-
-                    switch (sortOrder)
+                    // https://stackoverflow.com/questions/33275831/for-loop-result-in-overflow-with-task-run-or-task-start
+                    var t = loop;
+                    var task = Task.Run(() =>
                     {
-                        case (int) SortOrder.Asc:
-                            twoBlocks = new List<long>(twoBlocks.OrderBy(x => x));
-                            break;
-                        case (int) SortOrder.Desc:
-                            twoBlocks = new List<long>(twoBlocks.OrderByDescending(x => x));
-                            break;
-                    }
+                        var index = blockSize * (2 * t + parity);
+                        var index1 = Math.Min(index + 2 * blockSize, count);
+                        Console.WriteLine($"Thread #{t} sort [{index},{index1})");
+                        var twoBlocks = new List<long>();
+                        for (var k = index; k < index1; k++)
+                            twoBlocks.Add(list[k]);
 
-                    for (var k = index; k < index + 2 * blockSize && k < count; k++)
-                        list[k] = twoBlocks[k - index];
-                });
+                        switch (sortOrder)
+                        {
+                            case (int) SortOrder.Asc:
+                                twoBlocks = new List<long>(twoBlocks.OrderBy(x => x));
+                                break;
+                            case (int) SortOrder.Desc:
+                                twoBlocks = new List<long>(twoBlocks.OrderByDescending(x => x));
+                                break;
+                        }
+
+                        for (var k = index; k < index1; k++)
+                            list[k] = twoBlocks[k - index];
+                    });
+                    tasks.Add(task);
+                }
+                Task.WaitAll(tasks.ToArray());
+
+                //Parallel.ForEach(Enumerable.Range(0, numberOfThreads), t =>
+                //{
+                //    var index = blockSize * (2 * t + parity);
+                //    var twoBlocks = new List<long>();
+                //    for (var k = index; k < index + 2 * blockSize && k < count; k++)
+                //        twoBlocks.Add(list[k]);
+
+                //    switch (sortOrder)
+                //    {
+                //        case (int) SortOrder.Asc:
+                //            twoBlocks = new List<long>(twoBlocks.OrderBy(x => x));
+                //            break;
+                //        case (int) SortOrder.Desc:
+                //            twoBlocks = new List<long>(twoBlocks.OrderByDescending(x => x));
+                //            break;
+                //    }
+
+                //    for (var k = index; k < index + 2 * blockSize && k < count; k++)
+                //        list[k] = twoBlocks[k - index];
+                //});
             }
         }
     }
